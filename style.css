@@ -1,4 +1,4 @@
-/* 全局样式 */
+/* Apple 风格 */
 * {
   margin: 0;
   padding: 0;
@@ -6,146 +6,211 @@
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  line-height: 1.6;
-  color: #333;
-  background: #fafafa;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+  line-height: 1.4;
+  color: #1d1d1f;
+  background: #fff;
+  font-size: 17px;
 }
 
-/* 头部 */
-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  padding: 3rem 2rem;
+/* 头部 - Apple 风格大横 {
+  background:屏 */
+header #000;
+  color: #f5f5f7;
+  padding: 92px 48px 92px;
   text-align: center;
 }
 
 header h1 {
-  font-size: 2.5rem;
-  margin-bottom: 0.5rem;
+  font-size: 56px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
 }
 
 .subtitle {
-  font-size: 1.1rem;
-  opacity: 0.9;
+  font-size: 28px;
+  font-weight: 400;
+  color: #86868b;
 }
 
 /* 导航 */
 nav {
-  background: white;
-  padding: 1rem 2rem;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  padding: 20px 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+nav ul {
   display: flex;
   justify-content: center;
-  gap: 2rem;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  gap: 40px;
+  list-style: none;
+  max-width: 980px;
+  margin: 0 auto;
 }
 
 nav a {
   text-decoration: none;
-  color: #666;
-  font-weight: 500;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  transition: all 0.3s;
+  color: #f5f5f7;
+  font-size: 12px;
+  font-weight: 400;
+  opacity: 0.8;
+  transition: opacity 0.3s;
 }
 
-nav a:hover, nav a.active {
-  color: #667eea;
-  background: rgba(102, 126, 234, 0.1);
+nav a:hover {
+  opacity: 1;
 }
 
 /* 主内容 */
 main {
-  max-width: 800px;
+  max-width: 980px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 80px 20px;
 }
 
 .hero {
   text-align: center;
-  padding: 3rem 0;
-  border-bottom: 1px solid #eee;
+  padding: 60px 0;
 }
 
 .hero h2 {
-  font-size: 2rem;
-  margin-bottom: 1rem;
-  color: #333;
+  font-size: 48px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  letter-spacing: -0.005em;
 }
 
 .hero p {
-  font-size: 1.2rem;
-  color: #666;
+  font-size: 24px;
+  color: #86868b;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
+/* 文章列表 - Apple Card 风格 */
 .latest-articles {
-  margin-top: 3rem;
+  margin-top: 60px;
 }
 
 .latest-articles h3 {
-  font-size: 1.5rem;
-  margin-bottom: 1.5rem;
-  color: #333;
+  font-size: 32px;
+  font-weight: 600;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.article-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
 }
 
 .article-list article {
-  background: white;
-  padding: 1.5rem;
-  border-radius: 8px;
-  margin-bottom: 1rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  transition: transform 0.3s;
+  background: #f5f5f7;
+  border-radius: 18px;
+  padding: 32px;
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .article-list article:hover {
-  transform: translateY(-2px);
+  transform: scale(1.02);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.1);
 }
 
 .article-list h4 {
-  font-size: 1.3rem;
-  margin-bottom: 0.5rem;
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 8px;
 }
 
 .article-list h4 a {
   text-decoration: none;
-  color: #333;
+  color: #0066cc;
 }
 
 .article-list h4 a:hover {
-  color: #667eea;
+  text-decoration: underline;
 }
 
 .date {
-  color: #999;
-  font-size: 0.9rem;
-  margin-bottom: 0.5rem;
+  color: #86868b;
+  font-size: 14px;
+  margin-bottom: 12px;
 }
 
 .excerpt {
-  color: #666;
+  color: #1d1d1f;
+  font-size: 15px;
+}
+
+/* 关于页面 */
+.about-content {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.about-content p {
+  font-size: 21px;
+  color: #86868b;
+  margin-bottom: 24px;
+}
+
+.about-content h3 {
+  font-size: 32px;
+  font-weight: 600;
+  margin-top: 48px;
+  margin-bottom: 20px;
+}
+
+.about-content ul {
+  list-style: none;
+}
+
+.about-content li {
+  font-size: 18px;
+  margin: 12px 0;
+}
+
+.about-content a {
+  color: #0066cc;
+  text-decoration: none;
 }
 
 /* 页脚 */
 footer {
+  background: #f5f5f7;
+  padding: 40px 20px;
   text-align: center;
-  padding: 2rem;
-  color: #999;
-  margin-top: 3rem;
-  border-top: 1px solid #eee;
+  color: #86868b;
+  font-size: 12px;
 }
 
 /* 响应式 */
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   header h1 {
-    font-size: 1.8rem;
+    font-size: 40px;
   }
   
-  nav {
-    flex-direction: column;
-    gap: 0.5rem;
+  .subtitle {
+    font-size: 21px;
   }
   
-  main {
-    padding: 1rem;
+  nav ul {
+    gap: 20px;
+  }
+  
+  .hero h2 {
+    font-size: 32px;
+  }
+  
+  .hero p {
+    font-size: 19px;
   }
 }
