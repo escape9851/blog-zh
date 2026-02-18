@@ -1,15 +1,6 @@
 {
   "articles": [
     {
-      "id": 2,
-      "title": "AI 时代的思考",
-      "date": "2026-02-16",
-      "category": "tech",
-      "excerpt": "关于人工智能的思考",
-      "content": "关于人工智能的思考",
-      "status": "published"
-    },
-    {
       "id": 3,
       "title": "工作流优化",
       "date": "2026-02-17",
