@@ -1,13 +1,3 @@
 {
-  "articles": [
-    {
-      "id": 3,
-      "title": "工作流优化",
-      "date": "2026-02-17",
-      "category": "tech",
-      "excerpt": "如何利用 AI 提升效率",
-      "content": "如何利用 AI 提升效率",
-      "status": "draft"
-    }
-  ]
+  "articles": []
 }
