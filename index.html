@@ -3,50 +3,407 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>escape - 技术与思考</title>
-  <link rel="stylesheet" href="style.css">
+  <title>escape - 逃离现实</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    :root {
+      --bg-deep: #030712;
+      --bg-card: rgba(17, 24, 39, 0.7);
+      --cyan-glow: #00f3ff;
+      --cyan-dim: #0891b2;
+      --text: #e0f2fe;
+      --text-dim: #7dd3fc;
+      --border: rgba(8, 145, 178, 0.3);
+    }
+    
+    body {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      background: var(--bg-deep);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    
+    /* 深海背景 */
+    .bg {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background: 
+        radial-gradient(ellipse at 20% 80%, rgba(0, 243, 255, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(6, 78, 159, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(3, 7, 18, 1) 0%, #030712 100%);
+      animation: deepSea 20s ease-in-out infinite;
+    }
+    
+    @keyframes deepSea {
+      0%, 100% { transform: scale(1) translateY(0); }
+      50% { transform: scale(1.02) translateY(-10px); }
+    }
+    
+    /* 浮动粒子 */
+    .particles {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      overflow: hidden;
+    }
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: var(--cyan-glow);
+      border-radius: 50%;
+      opacity: 0.3;
+      animation: float 15s infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+      10% { opacity: 0.3; }
+      90% { opacity: 0.3; }
+      100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
+    }
+    
+    /* 导航 */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(3, 7, 18, 0.8);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      z-index: 100;
+    }
+    .nav-logo {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--cyan-glow);
+      text-shadow: 0 0 20px var(--cyan-glow);
+      letter-spacing: 0.1em;
+    }
+    .nav-links { display: flex; gap: 8px; }
+    .nav-links a {
+      color: var(--text-dim);
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 100px;
+      font-size: 14px;
+      transition: all 0.3s;
+      border: 1px solid transparent;
+    }
+    .nav-links a:hover, .nav-links a.active {
+      color: var(--cyan-glow);
+      border-color: var(--cyan-glow);
+      text-shadow: 0 0 10px var(--cyan-glow);
+      box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+    }
+    
+    /* 主内容 */
+    main {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 120px 24px 60px;
+    }
+    
+    /* 头部 */
+    .hero {
+      text-align: center;
+      padding: 60px 0;
+      animation: fadeIn 1s ease;
+    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    
+    .avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 2px solid var(--cyan-glow);
+      margin-bottom: 24px;
+      box-shadow: 0 0 40px rgba(0, 243, 255, 0.5), inset 0 0 20px rgba(0, 243, 255, 0.2);
+      animation: avatarGlow 3s ease-in-out infinite;
+      transition: transform 0.3s;
+      object-fit: cover;
+    }
+    .avatar:hover { transform: scale(1.1); }
+    @keyframes avatarGlow {
+      0%, 100% { box-shadow: 0 0 40px rgba(0, 243, 255, 0.5); }
+      50% { box-shadow: 0 0 60px rgba(0, 243, 255, 0.8); }
+    }
+    
+    .hero h1 {
+      font-size: 56px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, var(--cyan-glow), #a855f7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: none;
+      filter: drop-shadow(0 0 30px rgba(0, 243, 255, 0.5));
+    }
+    
+    .hero p {
+      color: var(--text-dim);
+      font-size: 18px;
+      letter-spacing: 0.2em;
+    }
+    
+    /* 荧光字效果 */
+    .glow-text {
+      color: var(--cyan-glow);
+      text-shadow: 0 0 10px var(--cyan-glow), 0 0 20px var(--cyan-glow), 0 0 40px var(--cyan-dim);
+    }
+    
+    /* 标题 */
+    .section-title {
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--cyan-glow);
+      margin-bottom: 24px;
+      padding-left: 4px;
+      text-shadow: 0 0 10px var(--cyan-glow);
+    }
+    
+    /* 文章卡片 */
+    .articles { display: flex; flex-direction: column; gap: 20px; }
+    
+    .article-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .article-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(0, 243, 255, 0.05), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .article-card:hover {
+      border-color: var(--cyan-glow);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 30px rgba(0, 243, 255, 0.1);
+    }
+    .article-card:hover::before { opacity: 1; }
+    
+    .article-card h3 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+    .article-card .meta {
+      font-size: 13px;
+      color: var(--text-dim);
+      margin-bottom: 12px;
+      font-family: 'SF Mono', monospace;
+    }
+    .article-card .excerpt { color: var(--text-dim); font-size: 15px; line-height: 1.7; }
+    
+    /* 文章图片 */
+    .article-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 16px;
+      border: 1px solid var(--border);
+    }
+    
+    /* 抖音按钮 */
+    .douyin-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 12px;
+      padding: 12px 20px;
+      background: linear-gradient(135deg, #fe2c55, #25f4ee);
+      color: white;
+      text-decoration: none;
+      border-radius: 100px;
+      font-weight: 600;
+      font-size: 14px;
+      transition: all 0.3s;
+      box-shadow: 0 0 20px rgba(254, 44, 85, 0.4);
+    }
+    .douyin-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 30px rgba(254, 44, 85, 0.6);
+    }
+    
+    /* 关于 */
+    .about-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 48px;
+      text-align: center;
+    }
+    .about-card p {
+      color: var(--text-dim);
+      font-size: 16px;
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+    
+    /* 页脚 */
+    footer {
+      text-align: center;
+      padding: 40px;
+      color: var(--text-dim);
+      font-size: 14px;
+      border-top: 1px solid var(--border);
+      margin-top: 60px;
+      font-family: 'SF Mono', monospace;
+    }
+    
+    /* 加载 */
+    .loading {
+      text-align: center;
+      padding: 60px;
+      color: var(--text-dim);
+      font-family: 'SF Mono', monospace;
+    }
+    
+    /* 响应式 */
+    @media (max-width: 640px) {
+      nav { padding: 16px 20px; }
+      .hero h1 { font-size: 36px; }
+      main { padding-top: 100px; }
+      .article-card { padding: 20px; }
+    }
+  </style>
 </head>
 <body>
+  <div class="bg"></div>
+  <div class="particles" id="particles"></div>
+  
   <nav>
-    <ul>
-      <li><a href="index.html">首页</a></li>
-      <li><a href="articles.html">文章</a></li>
-      <li><a href="about.html">关于</a></li>
-    </ul>
+    <div class="nav-logo glow-text">ESCAPE</div>
+    <div class="nav-links">
+      <a href="#" data-page="home" class="active" onclick="showPage('home')">首页</a>
+      <a href="#" data-page="articles" onclick="showPage('articles')">随笔</a>
+      <a href="#" data-page="about" onclick="showPage('about')">关于</a>
+    </div>
   </nav>
   
-  <header>
-    <img src="avatar.jpg" alt="avatar" class="avatar">
-    <h1>escape</h1>
-    <p class="subtitle">技术 · 生活 · 思考</p>
-  </header>
-  
-  <main>
-    <section class="latest-articles">
-      <h2 style="text-align:center;margin-bottom:32px;font-size:28px;">最新文章</h2>
-      
-      <article class="article-card">
-        <h3><a href="articles/hello-world.html">你好，世界</a></h3>
-        <p class="date">2026年2月15日</p>
-        <p class="excerpt">这是我的第一篇博客文章，记录技术学习和生活思考...</p>
-      </article>
-      
-      <article class="article-card">
-        <h3><a href="#">AI 时代的思考</a></h3>
-        <p class="date">2026年2月16日</p>
-        <p class="excerpt">关于人工智能的一些思考和探索...</p>
-      </article>
-      
-      <article class="article-card">
-        <h3><a href="#">工作流优化</a></h3>
-        <p class="date">2026年2月17日</p>
-        <p class="excerpt">如何利用 AI 工具提升工作效率...</p>
-      </article>
-    </section>
+  <main id="content">
+    <div class="loading">加载中...</div>
   </main>
   
   <footer>
-    <p>© 2026 escape. All rights reserved.</p>
+    <p class="glow-text">© 2026 escape // 逃离现实</p>
   </footer>
+  
+  <script>
+    // 粒子效果
+    const particles = document.getElementById('particles');
+    for (let i = 0; i < 20; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      p.style.left = Math.random() * 100 + '%';
+      p.style.animationDelay = Math.random() * 15 + 's';
+      p.style.animationDuration = (15 + Math.random() * 10) + 's';
+      particles.appendChild(p);
+    }
+    
+    let data = { articles: [], settings: {} };
+    let page = 'home';
+    
+    async function load() {
+      try {
+        const res = await fetch('/api/blog', { 
+          method: 'POST', 
+          headers: {'Content-Type':'application/json'}, 
+          body: JSON.stringify({action:'get'}) 
+        });
+        data = await res.json();
+        data = data.data || { articles: [], settings: {} };
+      } catch(e) {}
+      render();
+    }
+    
+    function render() {
+      const c = document.getElementById('content');
+      const p = data.articles.filter(a => a.status === 'published');
+      const title = data.settings?.title || 'escape';
+      const subtitle = data.settings?.subtitle || '逃离现实';
+      
+      if(page === 'home') {
+        c.innerHTML = `
+          <div class="hero">
+            <img src="avatar.jpg" alt="avatar" class="avatar">
+            <h1>${title}</h1>
+            <p>${subtitle}</p>
+          </div>
+          <h2 class="section-title">// 最新随笔</h2>
+          <div class="articles">
+            ${p.slice(0,3).map(a => renderArticleCard(a)).join('')}
+          </div>
+        `;
+      } else if(page === 'articles') {
+        c.innerHTML = `
+          <h1 style="text-align:center;margin-bottom:40px;font-size:36px;" class="glow-text">随笔</h1>
+          <div class="articles">
+            ${p.map(a => renderArticleCard(a)).join('')}
+          </div>
+        `;
+      } else if(page === 'about') {
+        c.innerHTML = `
+          <div class="hero">
+            <img src="avatar.jpg" alt="avatar" class="avatar">
+            <h1>关于</h1>
+          </div>
+          <div class="about-card">
+            <p>你好，我是 escape。</p>
+            <p>这里记录了一些想法、技术笔记和生活随想。</p>
+            <p>致力于在数字世界里寻找一片宁静。</p>
+            <p style="color:var(--cyan-glow);margin-top:24px;">Stay curious. Stay逃离.</p>
+          </div>
+        `;
+      }
+    }
+    
+    function renderArticleCard(a) {
+      let html = '';
+      
+      // 如果有图片
+      if (a.image_url) {
+        html += `<img src="${a.image_url}" class="article-image" alt="${a.title}" onerror="this.style.display='none'">`;
+      }
+      
+      html += `<h3>${a.title}</h3>`;
+      html += `<p class="meta">${a.date} // ${a.category || '随笔'}</p>`;
+      html += `<p class="excerpt">${a.excerpt || a.content || ''}</p>`;
+      
+      // 如果有抖音链接
+      if (a.video_url) {
+        html += `<a href="${a.video_url}" target="_blank" class="douyin-btn">▶ 抖音查看</a>`;
+      }
+      
+      return `<article class="article-card">${html}</article>`;
+    }
+    
+    function showPage(p) { 
+      page = p; 
+      document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+      document.querySelector('.nav-links a[data-page="'+p+'"]').classList.add('active');
+      window.scrollTo({top: 0, behavior: 'smooth'});
+      render(); 
+    }
+    
+    load();
+  </script>
 </body>
 </html>
