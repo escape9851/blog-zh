@@ -10,15 +10,6 @@
       "status": "published"
     },
     {
-      "id": 2,
-      "title": "测试文章B",
-      "date": "2026-02-17",
-      "category": "life",
-      "excerpt": "摘要B",
-      "content": "内容B",
-      "status": "published"
-    },
-    {
       "id": 3,
       "title": "测试文章C",
       "date": "2026-02-16",
