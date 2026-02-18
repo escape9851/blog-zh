@@ -1,15 +1,6 @@
 {
   "articles": [
     {
-      "id": 1,
-      "title": "你好，世界",
-      "date": "2026-02-15",
-      "category": "life",
-      "excerpt": "这是我的第一篇博客文章",
-      "content": "这是我的第一篇博客文章",
-      "status": "published"
-    },
-    {
       "id": 2,
       "title": "AI 时代的思考",
       "date": "2026-02-16",
