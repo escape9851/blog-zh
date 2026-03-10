@@ -91,7 +91,7 @@
 <body>
   <div class="container">
     <h1>Backend Console</h1>
-    <p class="subtitle">用于调试 /api/blog 的 get/save/uploadAsset 接口（生产可用）。</p>
+    <p class="subtitle">用于调试 /api/blog 的 get/save/uploadAsset 接口（上传建议单文件 ≤ 2.8MB）。</p>
 
     <div class="grid">
       <section class="card">
@@ -159,6 +159,9 @@
       let payload = {};
       try { payload = await res.json(); } catch (_) {}
       if (!res.ok) {
+        if (res.status === 413) {
+          throw new Error('文件过大（Vercel 限制）。请压缩到 2.8MB 内，或改用 URL。');
+        }
         throw new Error(payload.error || `HTTP ${res.status}`);
       }
       return payload;
@@ -246,6 +249,11 @@
 
       if (!file) {
         show('upload-status', '请选择文件', 'err');
+        return;
+      }
+
+      if (file.size > Math.floor(2.8 * 1024 * 1024)) {
+        show('upload-status', '文件过大。请压缩到 2.8MB 内，或改用 URL。', 'err');
         return;
       }
 

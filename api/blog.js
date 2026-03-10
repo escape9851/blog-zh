@@ -168,14 +168,14 @@ export default async function handler(req, res) {
         return json(res, 400, { error: 'Missing file data' });
       }
 
-      if (!mimeType.startsWith(`${kind}/`)) {
+      if (mimeType && !mimeType.startsWith(`${kind}/`)) {
         return json(res, 400, { error: `Invalid mime type for ${kind}` });
       }
 
       const bytes = Math.ceil((fileData.length * 3) / 4);
-      const maxBytes = kind === 'video' ? 50 * 1024 * 1024 : 10 * 1024 * 1024;
+      const maxBytes = 2.8 * 1024 * 1024;
       if (bytes > maxBytes) {
-        return json(res, 400, { error: `File too large. Max ${kind === 'video' ? '50MB' : '10MB'}` });
+        return json(res, 400, { error: 'File too large for direct upload. Please keep it under 2.8MB or use URL mode.' });
       }
 
       const { defaultBranch } = await getRepoMeta(token);

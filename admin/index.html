@@ -440,6 +440,7 @@
 
     let store = { articles: [], settings: {} };
     let editingId = null;
+    const CLIENT_UPLOAD_LIMIT_BYTES = Math.floor(2.8 * 1024 * 1024);
 
     function showToast(message, type = 'ok', timeout = 2600) {
       const toast = document.getElementById('toast');
@@ -507,10 +508,19 @@
       } catch (_) {}
 
       if (!res.ok) {
+        if (res.status === 413) {
+          throw new Error('文件过大（Vercel 限制）。请压缩到 2.8MB 内，或使用 URL 方式。');
+        }
         throw new Error(payload.error || `Request failed: ${res.status}`);
       }
 
       return payload;
+    }
+
+    function checkClientFileSize(file) {
+      if (file.size > CLIENT_UPLOAD_LIMIT_BYTES) {
+        throw new Error('文件过大。当前直传上限约 2.8MB，请压缩后再传，或改用 URL。');
+      }
     }
 
     async function loadData() {
@@ -711,6 +721,7 @@
     }
 
     async function uploadFileToRepo(file, kind) {
+      checkClientFileSize(file);
       const base64 = await readAsBase64(file);
       return await api('uploadAsset', {
         fileData: base64,
