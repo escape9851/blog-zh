@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>escape Backend Console</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0b0d12;
+      --card: #141925;
+      --line: #293043;
+      --text: #eef2ff;
+      --muted: #9ba6c4;
+      --brand: #6ea2ff;
+      --ok: #36c281;
+      --err: #f36373;
+      --radius: 14px;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at 85% 10%, #1f2f59 0%, transparent 35%), var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .container { max-width: 1080px; margin: 0 auto; }
+    h1 { font-size: clamp(28px, 4vw, 40px); margin-bottom: 8px; }
+    .subtitle { color: var(--muted); margin-bottom: 18px; }
+    .grid {
+      display: grid;
+      gap: 14px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .card {
+      background: rgba(20, 25, 37, 0.92);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 16px;
+    }
+    .card h2 { font-size: 16px; margin-bottom: 12px; }
+    label { display: block; font-size: 13px; color: var(--muted); margin: 10px 0 6px; }
+    input, textarea, select {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: #0f1420;
+      color: var(--text);
+      border-radius: 10px;
+      padding: 10px;
+      outline: none;
+    }
+    textarea { min-height: 110px; resize: vertical; font-family: ui-monospace, Menlo, monospace; }
+    .row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+    button {
+      border: 1px solid transparent;
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      background: var(--brand);
+      color: #fff;
+    }
+    button.secondary { background: transparent; border-color: var(--line); color: var(--text); }
+    button.danger { background: var(--err); }
+    pre {
+      margin-top: 10px;
+      background: #0d111b;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 10px;
+      overflow: auto;
+      min-height: 120px;
+      color: #d4ddff;
+      font-size: 12px;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .status { font-size: 13px; margin-top: 8px; color: var(--muted); }
+    .status.ok { color: var(--ok); }
+    .status.err { color: var(--err); }
+    .full { grid-column: 1 / -1; }
+    .small { font-size: 12px; color: var(--muted); }
+    @media (max-width: 900px) {
+      .grid { grid-template-columns: 1fr; }
+      body { padding: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Backend Console</h1>
+    <p class="subtitle">用于调试 /api/blog 的 get/save/uploadAsset 接口（生产可用）。</p>
+
+    <div class="grid">
+      <section class="card">
+        <h2>1) 接口健康检查</h2>
+        <p class="small">会调用 <code>action=get</code>。</p>
+        <div class="row">
+          <button onclick="checkHealth()">检查 API</button>
+        </div>
+        <div id="health-status" class="status">待检测</div>
+        <pre id="health-output">{}</pre>
+      </section>
+
+      <section class="card">
+        <h2>2) 上传媒体</h2>
+        <label>类型</label>
+        <select id="upload-kind">
+          <option value="image">图片</option>
+          <option value="video">视频</option>
+        </select>
+        <label>文件</label>
+        <input id="upload-file" type="file" accept="image/*,video/*">
+        <div class="row">
+          <button onclick="uploadAsset()">上传到仓库</button>
+        </div>
+        <div id="upload-status" class="status">待上传</div>
+        <pre id="upload-output">{}</pre>
+      </section>
+
+      <section class="card full">
+        <h2>3) 数据编辑器</h2>
+        <p class="small">先点“读取 data.json”，编辑后再点“保存 data.json”。</p>
+        <div class="row">
+          <button onclick="loadData()">读取 data.json</button>
+          <button onclick="saveData()">保存 data.json</button>
+          <button class="secondary" onclick="formatJson()">格式化 JSON</button>
+          <button class="danger" onclick="resetEditor()">清空</button>
+        </div>
+        <label>JSON 内容</label>
+        <textarea id="editor" placeholder='{"articles": [], "settings": {}}'></textarea>
+        <div id="editor-status" class="status">待操作</div>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    const API_URL = '/api/blog';
+
+    function show(id, text, cls = '') {
+      const el = document.getElementById(id);
+      el.textContent = text;
+      el.className = cls ? `status ${cls}` : 'status';
+    }
+
+    function pretty(data) {
+      return JSON.stringify(data, null, 2);
+    }
+
+    async function callApi(action, data = {}) {
+      const res = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action, data })
+      });
+
+      let payload = {};
+      try { payload = await res.json(); } catch (_) {}
+      if (!res.ok) {
+        throw new Error(payload.error || `HTTP ${res.status}`);
+      }
+      return payload;
+    }
+
+    async function checkHealth() {
+      show('health-status', '检测中...');
+      try {
+        const result = await callApi('get');
+        document.getElementById('health-output').textContent = pretty(result);
+        show('health-status', '接口正常', 'ok');
+      } catch (err) {
+        show('health-status', `失败: ${err.message}`, 'err');
+        document.getElementById('health-output').textContent = pretty({ error: err.message });
+      }
+    }
+
+    async function loadData() {
+      show('editor-status', '读取中...');
+      try {
+        const result = await callApi('get');
+        const data = result.data || { articles: [], settings: {} };
+        document.getElementById('editor').value = pretty(data);
+        show('editor-status', '读取成功', 'ok');
+      } catch (err) {
+        show('editor-status', `读取失败: ${err.message}`, 'err');
+      }
+    }
+
+    async function saveData() {
+      const raw = document.getElementById('editor').value.trim();
+      if (!raw) {
+        show('editor-status', '请输入 JSON', 'err');
+        return;
+      }
+
+      let json;
+      try { json = JSON.parse(raw); }
+      catch (err) {
+        show('editor-status', `JSON 格式错误: ${err.message}`, 'err');
+        return;
+      }
+
+      show('editor-status', '保存中...');
+      try {
+        await callApi('save', json);
+        show('editor-status', '保存成功', 'ok');
+      } catch (err) {
+        show('editor-status', `保存失败: ${err.message}`, 'err');
+      }
+    }
+
+    function formatJson() {
+      const raw = document.getElementById('editor').value.trim();
+      if (!raw) return;
+      try {
+        document.getElementById('editor').value = pretty(JSON.parse(raw));
+        show('editor-status', '格式化成功', 'ok');
+      } catch (err) {
+        show('editor-status', `格式化失败: ${err.message}`, 'err');
+      }
+    }
+
+    function resetEditor() {
+      document.getElementById('editor').value = '';
+      show('editor-status', '已清空');
+    }
+
+    function fileToBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = e => {
+          const raw = String(e.target.result || '');
+          resolve(raw.includes(',') ? raw.split(',')[1] : raw);
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    async function uploadAsset() {
+      const kind = document.getElementById('upload-kind').value;
+      const input = document.getElementById('upload-file');
+      const file = input.files && input.files[0];
+
+      if (!file) {
+        show('upload-status', '请选择文件', 'err');
+        return;
+      }
+
+      show('upload-status', '上传中...');
+      try {
+        const fileData = await fileToBase64(file);
+        const result = await callApi('uploadAsset', {
+          kind,
+          fileName: file.name,
+          mimeType: file.type,
+          fileData
+        });
+        document.getElementById('upload-output').textContent = pretty(result);
+        show('upload-status', '上传成功', 'ok');
+      } catch (err) {
+        document.getElementById('upload-output').textContent = pretty({ error: err.message });
+        show('upload-status', `上传失败: ${err.message}`, 'err');
+      }
+    }
+
+    checkHealth();
+  </script>
+</body>
+</html>
