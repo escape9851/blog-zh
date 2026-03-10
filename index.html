@@ -4,405 +4,658 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>escape - 逃离现实</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
     :root {
-      --bg-deep: #030712;
-      --bg-card: rgba(17, 24, 39, 0.7);
-      --cyan-glow: #00f3ff;
-      --cyan-dim: #0891b2;
-      --text: #e0f2fe;
-      --text-dim: #7dd3fc;
-      --border: rgba(8, 145, 178, 0.3);
+      --bg: #f4f4f1;
+      --bg-soft: #ffffff;
+      --text: #131313;
+      --text-muted: #5f5f5a;
+      --line: rgba(19, 19, 19, 0.12);
+      --accent: #1f4fd6;
+      --shadow: 0 20px 60px rgba(18, 20, 28, 0.12);
+      --radius: 24px;
+      --radius-s: 14px;
+      --max-width: 1080px;
     }
-    
+
     body {
-      font-family: 'SF Mono', 'Fira Code', monospace;
-      background: var(--bg-deep);
+      font-family: "Outfit", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       color: var(--text);
+      background: var(--bg);
       min-height: 100vh;
       overflow-x: hidden;
+      line-height: 1.65;
     }
-    
-    /* 深海背景 */
+
     .bg {
       position: fixed;
       inset: 0;
       z-index: -1;
-      background: 
-        radial-gradient(ellipse at 20% 80%, rgba(0, 243, 255, 0.08) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 20%, rgba(6, 78, 159, 0.15) 0%, transparent 50%),
-        radial-gradient(ellipse at 50% 50%, rgba(3, 7, 18, 1) 0%, #030712 100%);
-      animation: deepSea 20s ease-in-out infinite;
+      background:
+        radial-gradient(circle at 8% 10%, rgba(31, 79, 214, 0.08), transparent 36%),
+        radial-gradient(circle at 88% 16%, rgba(150, 182, 255, 0.22), transparent 35%),
+        radial-gradient(circle at 82% 90%, rgba(19, 19, 19, 0.06), transparent 36%),
+        linear-gradient(180deg, #fafaf9 0%, #efefea 100%);
     }
-    
-    @keyframes deepSea {
-      0%, 100% { transform: scale(1) translateY(0); }
-      50% { transform: scale(1.02) translateY(-10px); }
-    }
-    
-    /* 浮动粒子 */
-    .particles {
+
+    .orb {
       position: fixed;
-      inset: 0;
-      z-index: -1;
-      overflow: hidden;
-    }
-    .particle {
-      position: absolute;
-      width: 4px;
-      height: 4px;
-      background: var(--cyan-glow);
+      width: 38vmin;
+      aspect-ratio: 1;
       border-radius: 50%;
-      opacity: 0.3;
-      animation: float 15s infinite;
+      pointer-events: none;
+      z-index: -1;
+      filter: blur(36px);
+      opacity: 0.45;
+      transform: translate3d(0, 0, 0);
     }
-    @keyframes float {
-      0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-      10% { opacity: 0.3; }
-      90% { opacity: 0.3; }
-      100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
+
+    .orb-1 {
+      background: rgba(31, 79, 214, 0.38);
+      left: -12vmin;
+      top: 32vmin;
     }
-    
-    /* 导航 */
+
+    .orb-2 {
+      background: rgba(255, 255, 255, 0.9);
+      right: -10vmin;
+      top: 8vmin;
+      opacity: 0.7;
+    }
+
     nav {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      padding: 20px 40px;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(92vw, var(--max-width));
+      background: rgba(255, 255, 255, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(14px);
+      border-radius: 999px;
+      z-index: 40;
+      box-shadow: 0 12px 30px rgba(11, 18, 46, 0.08);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: rgba(3, 7, 18, 0.8);
-      backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--border);
-      z-index: 100;
+      padding: 10px 12px 10px 18px;
     }
+
     .nav-logo {
-      font-size: 20px;
+      letter-spacing: 0.08em;
       font-weight: 700;
-      color: var(--cyan-glow);
-      text-shadow: 0 0 20px var(--cyan-glow);
-      letter-spacing: 0.1em;
+      font-size: 13px;
+      color: var(--text);
+      text-transform: uppercase;
     }
-    .nav-links { display: flex; gap: 8px; }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
     .nav-links a {
-      color: var(--text-dim);
       text-decoration: none;
-      padding: 10px 20px;
-      border-radius: 100px;
-      font-size: 14px;
-      transition: all 0.3s;
+      color: var(--text-muted);
+      font-size: 13px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      transition: 0.24s ease;
       border: 1px solid transparent;
     }
-    .nav-links a:hover, .nav-links a.active {
-      color: var(--cyan-glow);
-      border-color: var(--cyan-glow);
-      text-shadow: 0 0 10px var(--cyan-glow);
-      box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
-    }
-    
-    /* 主内容 */
-    main {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 120px 24px 60px;
-    }
-    
-    /* 头部 */
-    .hero {
-      text-align: center;
-      padding: 60px 0;
-      animation: fadeIn 1s ease;
-    }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-    
-    .avatar {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      border: 2px solid var(--cyan-glow);
-      margin-bottom: 24px;
-      box-shadow: 0 0 40px rgba(0, 243, 255, 0.5), inset 0 0 20px rgba(0, 243, 255, 0.2);
-      animation: avatarGlow 3s ease-in-out infinite;
-      transition: transform 0.3s;
-      object-fit: cover;
-    }
-    .avatar:hover { transform: scale(1.1); }
-    @keyframes avatarGlow {
-      0%, 100% { box-shadow: 0 0 40px rgba(0, 243, 255, 0.5); }
-      50% { box-shadow: 0 0 60px rgba(0, 243, 255, 0.8); }
-    }
-    
-    .hero h1 {
-      font-size: 56px;
-      font-weight: 700;
-      margin-bottom: 12px;
-      background: linear-gradient(135deg, var(--cyan-glow), #a855f7);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: none;
-      filter: drop-shadow(0 0 30px rgba(0, 243, 255, 0.5));
-    }
-    
-    .hero p {
-      color: var(--text-dim);
-      font-size: 18px;
-      letter-spacing: 0.2em;
-    }
-    
-    /* 荧光字效果 */
-    .glow-text {
-      color: var(--cyan-glow);
-      text-shadow: 0 0 10px var(--cyan-glow), 0 0 20px var(--cyan-glow), 0 0 40px var(--cyan-dim);
-    }
-    
-    /* 标题 */
-    .section-title {
-      font-size: 14px;
-      text-transform: uppercase;
-      letter-spacing: 0.2em;
-      color: var(--cyan-glow);
-      margin-bottom: 24px;
-      padding-left: 4px;
-      text-shadow: 0 0 10px var(--cyan-glow);
-    }
-    
-    /* 文章卡片 */
-    .articles { display: flex; flex-direction: column; gap: 20px; }
-    
-    .article-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 24px;
-      transition: all 0.3s;
-      position: relative;
-      overflow: hidden;
-    }
-    .article-card::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(0, 243, 255, 0.05), transparent);
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
-    .article-card:hover {
-      border-color: var(--cyan-glow);
-      transform: translateY(-4px);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 30px rgba(0, 243, 255, 0.1);
-    }
-    .article-card:hover::before { opacity: 1; }
-    
-    .article-card h3 {
-      font-size: 20px;
-      font-weight: 600;
-      margin-bottom: 8px;
+
+    .nav-links a:hover,
+    .nav-links a.active {
       color: var(--text);
+      background: rgba(255, 255, 255, 0.9);
+      border-color: rgba(19, 19, 19, 0.08);
     }
-    .article-card .meta {
-      font-size: 13px;
-      color: var(--text-dim);
-      margin-bottom: 12px;
-      font-family: 'SF Mono', monospace;
+
+    main {
+      width: min(92vw, var(--max-width));
+      margin: 0 auto;
+      padding: 120px 0 72px;
     }
-    .article-card .excerpt { color: var(--text-dim); font-size: 15px; line-height: 1.7; }
-    
-    /* 文章图片 */
-    .article-image {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-      border-radius: 12px;
-      margin-bottom: 16px;
-      border: 1px solid var(--border);
-    }
-    
-    /* 抖音按钮 */
-    .douyin-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      margin-top: 12px;
-      padding: 12px 20px;
-      background: linear-gradient(135deg, #fe2c55, #25f4ee);
-      color: white;
-      text-decoration: none;
-      border-radius: 100px;
-      font-weight: 600;
-      font-size: 14px;
-      transition: all 0.3s;
-      box-shadow: 0 0 20px rgba(254, 44, 85, 0.4);
-    }
-    .douyin-btn:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 30px rgba(254, 44, 85, 0.6);
-    }
-    
-    /* 关于 */
-    .about-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 48px;
-      text-align: center;
-    }
-    .about-card p {
-      color: var(--text-dim);
-      font-size: 16px;
-      line-height: 1.8;
-      margin-bottom: 16px;
-    }
-    
-    /* 页脚 */
-    footer {
-      text-align: center;
-      padding: 40px;
-      color: var(--text-dim);
-      font-size: 14px;
-      border-top: 1px solid var(--border);
-      margin-top: 60px;
-      font-family: 'SF Mono', monospace;
-    }
-    
-    /* 加载 */
+
     .loading {
       text-align: center;
-      padding: 60px;
-      color: var(--text-dim);
-      font-family: 'SF Mono', monospace;
+      padding: 120px 24px;
+      color: var(--text-muted);
+      font-size: 14px;
     }
-    
-    /* 响应式 */
-    @media (max-width: 640px) {
-      nav { padding: 16px 20px; }
-      .hero h1 { font-size: 36px; }
-      main { padding-top: 100px; }
-      .article-card { padding: 20px; }
+
+    .hero {
+      min-height: 58vh;
+      display: grid;
+      align-items: center;
+      gap: 26px;
+      padding: 50px 0 34px;
+    }
+
+    .hero-top {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .avatar {
+      width: 78px;
+      height: 78px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid rgba(255, 255, 255, 0.9);
+      box-shadow: 0 10px 35px rgba(17, 32, 77, 0.18);
+    }
+
+    .hero-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .hero h1 {
+      font-family: "Noto Serif SC", serif;
+      font-size: clamp(38px, 8vw, 78px);
+      letter-spacing: -0.02em;
+      line-height: 1.08;
+      max-width: 15ch;
+    }
+
+    .hero .subtitle {
+      font-size: clamp(16px, 2.5vw, 24px);
+      color: var(--text-muted);
+      max-width: 42ch;
+    }
+
+    .hero-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 8px;
+      max-width: 620px;
+    }
+
+    .metric {
+      background: rgba(255, 255, 255, 0.64);
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      border-radius: var(--radius-s);
+      padding: 14px 16px;
+    }
+
+    .metric b {
+      display: block;
+      font-size: 22px;
+      line-height: 1.1;
+      margin-bottom: 3px;
+    }
+
+    .metric span {
+      font-size: 12px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+      margin-top: 10px;
+    }
+
+    .section-head h2 {
+      font-size: clamp(22px, 4vw, 32px);
+      letter-spacing: -0.02em;
+    }
+
+    .section-head p {
+      font-size: 13px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .articles,
+    .media-grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .article-card {
+      background: rgba(255, 255, 255, 0.84);
+      border: 1px solid rgba(255, 255, 255, 0.95);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transform: translateY(0);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .article-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 24px 70px rgba(14, 21, 43, 0.14);
+    }
+
+    .article-body {
+      padding: 22px;
+    }
+
+    .article-media {
+      width: 100%;
+      border: none;
+      display: block;
+      background: #d8d9de;
+      max-height: min(52vh, 460px);
+      object-fit: cover;
+    }
+
+    .article-video {
+      width: 100%;
+      display: block;
+      max-height: min(56vh, 500px);
+      background: #111;
+    }
+
+    .meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 2px 10px;
+      background: rgba(255, 255, 255, 0.65);
+    }
+
+    .article-card h3 {
+      font-size: clamp(20px, 4vw, 29px);
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+      line-height: 1.2;
+    }
+
+    .excerpt {
+      color: #2a2a2a;
+      font-size: 15px;
+      white-space: pre-line;
+    }
+
+    .about {
+      background: rgba(255, 255, 255, 0.82);
+      border: 1px solid rgba(255, 255, 255, 0.95);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      padding: clamp(22px, 4vw, 42px);
+      margin-top: 8px;
+    }
+
+    .about p {
+      font-size: clamp(16px, 2vw, 20px);
+      color: #333;
+      margin-bottom: 16px;
+      max-width: 48ch;
+    }
+
+    .about p:last-child {
+      margin-bottom: 0;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    footer {
+      width: min(92vw, var(--max-width));
+      margin: 0 auto 26px;
+      border-top: 1px solid rgba(19, 19, 19, 0.12);
+      padding-top: 16px;
+      color: var(--text-muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+    }
+
+    .empty {
+      text-align: center;
+      border: 1px dashed var(--line);
+      border-radius: var(--radius);
+      padding: 48px 24px;
+      color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.52);
+    }
+
+    @media (max-width: 820px) {
+      nav {
+        top: 12px;
+        border-radius: 18px;
+      }
+
+      .nav-logo {
+        display: none;
+      }
+
+      .nav-links {
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      .nav-links a {
+        flex: 1;
+        text-align: center;
+        padding: 9px 8px;
+      }
+
+      .hero {
+        min-height: auto;
+        padding: 34px 0 20px;
+      }
+
+      .hero-top {
+        gap: 12px;
+      }
+
+      .avatar {
+        width: 58px;
+        height: 58px;
+      }
+
+      .hero-metrics {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .metric:last-child {
+        grid-column: 1 / -1;
+      }
     }
   </style>
 </head>
 <body>
   <div class="bg"></div>
-  <div class="particles" id="particles"></div>
-  
+  <div class="orb orb-1" aria-hidden="true"></div>
+  <div class="orb orb-2" aria-hidden="true"></div>
+
   <nav>
-    <div class="nav-logo glow-text">ESCAPE</div>
+    <div class="nav-logo">escape journal</div>
     <div class="nav-links">
       <a href="#" data-page="home" class="active" onclick="showPage('home')">首页</a>
       <a href="#" data-page="articles" onclick="showPage('articles')">随笔</a>
       <a href="#" data-page="about" onclick="showPage('about')">关于</a>
     </div>
   </nav>
-  
+
   <main id="content">
-    <div class="loading">加载中...</div>
+    <div class="loading">正在加载内容...</div>
   </main>
-  
-  <footer>
-    <p class="glow-text">© 2026 escape // 逃离现实</p>
-  </footer>
-  
+
+  <footer>© 2026 escape / all moments are drafts.</footer>
+
   <script>
-    // 粒子效果
-    const particles = document.getElementById('particles');
-    for (let i = 0; i < 20; i++) {
-      const p = document.createElement('div');
-      p.className = 'particle';
-      p.style.left = Math.random() * 100 + '%';
-      p.style.animationDelay = Math.random() * 15 + 's';
-      p.style.animationDuration = (15 + Math.random() * 10) + 's';
-      particles.appendChild(p);
-    }
-    
     let data = { articles: [], settings: {} };
     let page = 'home';
-    
+
+    const categoryLabel = {
+      tech: '技术',
+      thought: '思考',
+      life: '生活',
+      other: '其他',
+      image: '图片',
+      video: '视频'
+    };
+
+    function escapeHtml(str) {
+      return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function toSafeText(str) {
+      return escapeHtml(str).replace(/\n/g, '<br>');
+    }
+
     async function load() {
       try {
-        const res = await fetch('/api/blog', { 
-          method: 'POST', 
-          headers: {'Content-Type':'application/json'}, 
-          body: JSON.stringify({action:'get'}) 
+        const res = await fetch('/api/blog', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'get' })
         });
-        data = await res.json();
-        data = data.data || { articles: [], settings: {} };
-      } catch(e) {}
+
+        if (!res.ok) {
+          throw new Error('api failed');
+        }
+
+        const json = await res.json();
+        data = json.data || { articles: [], settings: {} };
+      } catch (e) {
+        try {
+          const fallback = await fetch('/data.json');
+          data = await fallback.json();
+        } catch (_) {
+          data = { articles: [], settings: {} };
+        }
+      }
+
       render();
+      initMotion();
     }
-    
+
+    function getPublishedArticles() {
+      return (data.articles || [])
+        .filter(a => a && a.status !== 'draft')
+        .sort((a, b) => String(b.date || '').localeCompare(String(a.date || '')));
+    }
+
+    function renderArticleCard(article) {
+      const title = escapeHtml(article.title || '未命名内容');
+      const date = escapeHtml(article.date || '');
+      const category = categoryLabel[article.category] || escapeHtml(article.category || '随笔');
+      const excerptRaw = article.excerpt || article.content || '';
+      const excerpt = toSafeText(excerptRaw);
+      const imageUrl = article.image_url ? escapeHtml(article.image_url) : '';
+      const videoUrl = article.video_url ? escapeHtml(article.video_url) : '';
+
+      let media = '';
+      if (videoUrl) {
+        media = `<video class="article-video" src="${videoUrl}" controls preload="metadata"></video>`;
+      } else if (imageUrl) {
+        media = `<img class="article-media" src="${imageUrl}" alt="${title}" loading="lazy" onerror="this.style.display='none'">`;
+      }
+
+      return `
+        <article class="article-card reveal">
+          ${media}
+          <div class="article-body">
+            <div class="meta">
+              <span>${date}</span>
+              <span class="pill">${category}</span>
+            </div>
+            <h3>${title}</h3>
+            <p class="excerpt">${excerpt}</p>
+          </div>
+        </article>
+      `;
+    }
+
+    function renderHome(articles, settings) {
+      const latest = articles.slice(0, 3);
+      const title = escapeHtml(settings.title || 'escape');
+      const subtitle = escapeHtml(settings.subtitle || '逃离现实，记录真实想法。');
+      const withImage = articles.filter(a => a.image_url).length;
+      const withVideo = articles.filter(a => a.video_url).length;
+
+      return `
+        <section class="hero">
+          <div class="hero-top reveal">
+            <img src="avatar.jpg" alt="avatar" class="avatar" loading="lazy">
+            <span class="hero-label">personal site</span>
+          </div>
+          <h1 class="reveal">${title}</h1>
+          <p class="subtitle reveal">${subtitle}</p>
+          <div class="hero-metrics reveal">
+            <div class="metric"><b>${articles.length}</b><span>篇内容</span></div>
+            <div class="metric"><b>${withImage}</b><span>图像条目</span></div>
+            <div class="metric"><b>${withVideo}</b><span>视频条目</span></div>
+          </div>
+        </section>
+
+        <section>
+          <div class="section-head reveal">
+            <h2>最新随笔</h2>
+            <p>latest entries</p>
+          </div>
+          <div class="articles">
+            ${latest.length ? latest.map(renderArticleCard).join('') : '<div class="empty">还没有发布内容。</div>'}
+          </div>
+        </section>
+      `;
+    }
+
+    function renderArticlesPage(articles) {
+      const mediaOnly = articles.filter(a => a.image_url || a.video_url).slice(0, 6);
+      return `
+        <section>
+          <div class="section-head reveal">
+            <h2>全部随笔</h2>
+            <p>all posts</p>
+          </div>
+          <div class="articles" style="margin-bottom: 26px;">
+            ${articles.length ? articles.map(renderArticleCard).join('') : '<div class="empty">还没有文章。</div>'}
+          </div>
+
+          <div class="section-head reveal">
+            <h2>媒体流</h2>
+            <p>image / video</p>
+          </div>
+          <div class="media-grid">
+            ${mediaOnly.length ? mediaOnly.map(renderArticleCard).join('') : '<div class="empty">暂时没有媒体内容。</div>'}
+          </div>
+        </section>
+      `;
+    }
+
+    function renderAbout(settings) {
+      const title = escapeHtml(settings.title || 'escape');
+      const subtitle = escapeHtml(settings.subtitle || '保持好奇，保持输出。');
+      return `
+        <section class="about reveal">
+          <p>你好，我是 ${title}。这是我的个人空间，用来记录技术、生活和长期想做但一直没做完的事。</p>
+          <p>${subtitle}</p>
+          <p>Stay curious. Keep shipping.</p>
+        </section>
+      `;
+    }
+
     function render() {
-      const c = document.getElementById('content');
-      const p = data.articles.filter(a => a.status === 'published');
-      const title = data.settings?.title || 'escape';
-      const subtitle = data.settings?.subtitle || '逃离现实';
-      
-      if(page === 'home') {
-        c.innerHTML = `
-          <div class="hero">
-            <img src="avatar.jpg" alt="avatar" class="avatar">
-            <h1>${title}</h1>
-            <p>${subtitle}</p>
-          </div>
-          <h2 class="section-title">// 最新随笔</h2>
-          <div class="articles">
-            ${p.slice(0,3).map(a => renderArticleCard(a)).join('')}
-          </div>
-        `;
-      } else if(page === 'articles') {
-        c.innerHTML = `
-          <h1 style="text-align:center;margin-bottom:40px;font-size:36px;" class="glow-text">随笔</h1>
-          <div class="articles">
-            ${p.map(a => renderArticleCard(a)).join('')}
-          </div>
-        `;
-      } else if(page === 'about') {
-        c.innerHTML = `
-          <div class="hero">
-            <img src="avatar.jpg" alt="avatar" class="avatar">
-            <h1>关于</h1>
-          </div>
-          <div class="about-card">
-            <p>你好，我是 escape。</p>
-            <p>这里记录了一些想法、技术笔记和生活随想。</p>
-            <p>致力于在数字世界里寻找一片宁静。</p>
-            <p style="color:var(--cyan-glow);margin-top:24px;">Stay curious. Stay逃离.</p>
-          </div>
-        `;
+      const container = document.getElementById('content');
+      const articles = getPublishedArticles();
+      const settings = data.settings || {};
+
+      if (page === 'home') {
+        container.innerHTML = renderHome(articles, settings);
+      } else if (page === 'articles') {
+        container.innerHTML = renderArticlesPage(articles);
+      } else {
+        container.innerHTML = renderAbout(settings);
       }
+
+      initMotion();
     }
-    
-    function renderArticleCard(a) {
-      let html = '';
-      
-      // 如果有图片
-      if (a.image_url) {
-        html += `<img src="${a.image_url}" class="article-image" alt="${a.title}" onerror="this.style.display='none'">`;
+
+    function showPage(next) {
+      page = next;
+      document.querySelectorAll('.nav-links a').forEach(link => {
+        link.classList.toggle('active', link.dataset.page === next);
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      render();
+      return false;
+    }
+
+    function initMotion() {
+      if (!(window.gsap && window.ScrollTrigger)) {
+        return;
       }
-      
-      html += `<h3>${a.title}</h3>`;
-      html += `<p class="meta">${a.date} // ${a.category || '随笔'}</p>`;
-      html += `<p class="excerpt">${a.excerpt || a.content || ''}</p>`;
-      
-      // 如果有抖音链接
-      if (a.video_url) {
-        html += `<a href="${a.video_url}" target="_blank" class="douyin-btn">▶ 抖音查看</a>`;
-      }
-      
-      return `<article class="article-card">${html}</article>`;
+
+      gsap.registerPlugin(ScrollTrigger);
+
+      gsap.to('.orb-1', {
+        y: -80,
+        x: 60,
+        scrollTrigger: {
+          trigger: document.body,
+          start: 'top top',
+          end: 'bottom top',
+          scrub: 1.5
+        }
+      });
+
+      gsap.to('.orb-2', {
+        y: 100,
+        x: -70,
+        scrollTrigger: {
+          trigger: document.body,
+          start: 'top top',
+          end: 'bottom top',
+          scrub: 1.8
+        }
+      });
+
+      gsap.fromTo('.reveal',
+        { y: 20, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          stagger: 0.08,
+          duration: 0.7,
+          ease: 'power2.out',
+          overwrite: 'auto'
+        }
+      );
+
+      document.querySelectorAll('.article-card').forEach(card => {
+        gsap.fromTo(card,
+          { y: 36, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.7,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: card,
+              start: 'top 90%'
+            }
+          }
+        );
+      });
     }
-    
-    function showPage(p) { 
-      page = p; 
-      document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
-      document.querySelector('.nav-links a[data-page="'+p+'"]').classList.add('active');
-      window.scrollTo({top: 0, behavior: 'smooth'});
-      render(); 
-    }
-    
+
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        showPage(link.dataset.page);
+      });
+    });
+
     load();
   </script>
 </body>
