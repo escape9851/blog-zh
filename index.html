@@ -6,59 +6,55 @@
   <title>escape - 逃离现实</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #f3f2ee;
-      --bg-card: rgba(255, 255, 255, 0.84);
-      --text: #161616;
-      --text-muted: #66635d;
-      --line: rgba(24, 24, 24, 0.12);
-      --accent: #1852e6;
-      --shadow: 0 20px 60px rgba(12, 18, 40, 0.12);
+      --bg: #efefeb;
+      --bg-soft: rgba(255, 255, 255, 0.8);
+      --text: #151515;
+      --muted: #66625b;
+      --line: rgba(21, 21, 21, 0.14);
+      --accent: #1a54e8;
       --radius: 24px;
-      --radius-s: 14px;
-      --max-width: 1120px;
+      --shadow: 0 20px 60px rgba(15, 20, 36, 0.12);
+      --max-width: 1140px;
     }
 
     body {
       font-family: "Outfit", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      color: var(--text);
       background: var(--bg);
+      color: var(--text);
       min-height: 100vh;
       overflow-x: hidden;
-      line-height: 1.65;
     }
 
     .bg {
       position: fixed;
       inset: 0;
-      z-index: -1;
+      z-index: -2;
       background:
-        radial-gradient(circle at 8% 10%, rgba(24, 82, 230, 0.09), transparent 36%),
-        radial-gradient(circle at 88% 12%, rgba(129, 166, 255, 0.22), transparent 34%),
-        radial-gradient(circle at 86% 86%, rgba(25, 25, 25, 0.08), transparent 34%),
-        linear-gradient(180deg, #f9f9f8 0%, #efeeea 100%);
+        radial-gradient(circle at 10% 10%, rgba(66, 102, 235, 0.15), transparent 34%),
+        radial-gradient(circle at 88% 16%, rgba(255, 255, 255, 0.65), transparent 34%),
+        linear-gradient(180deg, #f5f5f3 0%, #e9e8e3 100%);
     }
 
-    .orb {
+    .fog {
       position: fixed;
-      width: 36vmin;
+      width: 42vmin;
       aspect-ratio: 1;
       border-radius: 50%;
-      pointer-events: none;
+      filter: blur(48px);
       z-index: -1;
-      filter: blur(40px);
-      opacity: 0.42;
-      transform: translate3d(0, 0, 0);
+      pointer-events: none;
+      opacity: 0.36;
     }
 
-    .orb-1 { background: rgba(24, 82, 230, 0.34); left: -10vmin; top: 28vmin; }
-    .orb-2 { background: rgba(255, 255, 255, 0.95); right: -10vmin; top: 8vmin; opacity: 0.76; }
+    .fog-a { top: 18vh; left: -12vmin; background: rgba(26, 84, 232, 0.34); }
+    .fog-b { right: -8vmin; top: 8vh; background: rgba(255, 255, 255, 0.8); opacity: 0.58; }
 
     nav {
       position: fixed;
@@ -66,22 +62,23 @@
       left: 50%;
       transform: translateX(-50%);
       width: min(92vw, var(--max-width));
-      background: rgba(255, 255, 255, 0.75);
-      border: 1px solid rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(14px);
+      background: rgba(255, 255, 255, 0.74);
+      border: 1px solid rgba(255, 255, 255, 0.92);
       border-radius: 999px;
-      z-index: 40;
-      box-shadow: 0 12px 30px rgba(14, 22, 48, 0.08);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      backdrop-filter: blur(14px);
+      box-shadow: 0 10px 30px rgba(12, 20, 38, 0.1);
       padding: 10px 12px 10px 18px;
+      z-index: 40;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
     }
 
     .nav-logo {
-      letter-spacing: 0.08em;
-      font-weight: 700;
       font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
     }
 
@@ -89,374 +86,348 @@
 
     .nav-links a {
       text-decoration: none;
-      color: var(--text-muted);
+      color: var(--muted);
       font-size: 13px;
       padding: 8px 14px;
       border-radius: 999px;
-      transition: 0.24s ease;
       border: 1px solid transparent;
+      transition: 0.22s ease;
     }
 
     .nav-links a:hover,
     .nav-links a.active {
       color: var(--text);
-      background: rgba(255, 255, 255, 0.9);
-      border-color: rgba(25, 25, 25, 0.09);
+      background: rgba(255, 255, 255, 0.88);
+      border-color: rgba(20, 20, 20, 0.08);
     }
 
     main {
       width: min(92vw, var(--max-width));
       margin: 0 auto;
-      padding: 118px 0 72px;
+      padding: 118px 0 74px;
     }
 
     .loading {
+      padding: 120px 20px;
       text-align: center;
-      padding: 120px 24px;
-      color: var(--text-muted);
+      color: var(--muted);
       font-size: 14px;
     }
 
     .hero {
-      min-height: 56vh;
+      min-height: 52vh;
       display: grid;
-      align-items: center;
+      align-content: center;
       gap: 24px;
-      padding: 54px 0 36px;
+      margin-bottom: 30px;
     }
 
-    .hero-top { display: flex; align-items: center; gap: 16px; }
+    .hero-top { display: flex; align-items: center; gap: 15px; }
 
     .avatar {
-      width: 78px;
-      height: 78px;
+      width: 76px;
+      height: 76px;
       border-radius: 50%;
       object-fit: cover;
-      border: 2px solid rgba(255, 255, 255, 0.95);
-      box-shadow: 0 10px 35px rgba(17, 32, 77, 0.2);
+      border: 2px solid rgba(255, 255, 255, 0.94);
+      box-shadow: 0 10px 30px rgba(12, 32, 88, 0.2);
     }
 
     .hero-label {
-      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.15em;
       text-transform: uppercase;
-      letter-spacing: 0.18em;
-      color: var(--text-muted);
+      font-size: 12px;
       font-weight: 500;
     }
 
     .hero h1 {
       font-family: "Noto Serif SC", serif;
-      font-size: clamp(40px, 8vw, 82px);
-      letter-spacing: -0.02em;
+      font-size: clamp(40px, 8vw, 86px);
       line-height: 1.05;
-      max-width: 15ch;
+      letter-spacing: -0.02em;
+      max-width: 14ch;
     }
 
     .hero .subtitle {
-      font-size: clamp(16px, 2.4vw, 23px);
-      color: var(--text-muted);
-      max-width: 42ch;
+      color: var(--muted);
+      font-size: clamp(18px, 2.6vw, 26px);
     }
 
-    .hero-metrics {
+    .metrics {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 10px;
-      max-width: 660px;
+      max-width: 680px;
     }
 
     .metric {
+      border-radius: 14px;
       background: rgba(255, 255, 255, 0.66);
       border: 1px solid rgba(255, 255, 255, 0.95);
-      border-radius: var(--radius-s);
-      padding: 14px 16px;
+      padding: 14px;
     }
 
-    .metric b { display: block; font-size: 22px; line-height: 1.1; margin-bottom: 3px; }
+    .metric b { font-size: 26px; line-height: 1.1; display: block; }
+    .metric span { color: var(--muted); font-size: 12px; letter-spacing: 0.09em; text-transform: uppercase; }
 
-    .metric span {
-      font-size: 12px;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
+    .block { margin-bottom: 34px; }
 
     .section-head {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin: 8px 0 18px;
       gap: 10px;
+      margin-bottom: 14px;
       flex-wrap: wrap;
     }
 
-    .section-head h2 { font-size: clamp(22px, 4vw, 34px); letter-spacing: -0.02em; }
+    .section-head h2 { font-size: clamp(24px, 4vw, 38px); letter-spacing: -0.02em; }
+    .section-head p { color: var(--muted); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; }
 
-    .section-head p {
-      font-size: 12px;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-    }
-
-    .sync-section { margin: 16px 0 40px; }
-
-    .sync-pin {
-      position: relative;
-      background: var(--bg-card);
-      border: 1px solid rgba(255, 255, 255, 0.95);
+    .pin-gallery {
+      background: var(--bg-soft);
       border-radius: 30px;
-      box-shadow: var(--shadow);
-      overflow: hidden;
-      min-height: 72vh;
-      padding: 14px;
-    }
-
-    .sync-layout {
-      display: grid;
-      grid-template-columns: 84px minmax(0, 1.15fr) minmax(0, 0.85fr);
-      gap: 14px;
-      min-height: calc(72vh - 28px);
-    }
-
-    .sync-index {
-      border-radius: 20px;
-      background: rgba(255, 255, 255, 0.72);
       border: 1px solid rgba(255, 255, 255, 0.95);
+      box-shadow: var(--shadow);
+      padding: 14px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .pin-gallery-shell {
+      display: grid;
+      grid-template-columns: 88px minmax(0, 1.15fr) minmax(0, 0.85fr);
+      gap: 14px;
+      min-height: 72vh;
+    }
+
+    .pin-index {
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.74);
+      border: 1px solid rgba(255, 255, 255, 0.95);
+      padding: 12px 8px;
       display: flex;
       flex-direction: column;
-      gap: 6px;
-      padding: 12px 8px;
-      align-items: stretch;
       justify-content: center;
+      gap: 6px;
     }
 
-    .sync-index button {
+    .pin-index button {
       border: 1px solid transparent;
-      background: transparent;
-      color: var(--text-muted);
       border-radius: 12px;
+      background: transparent;
+      color: var(--muted);
       font-size: 12px;
       font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      padding: 10px 6px;
+      padding: 10px 4px;
       cursor: pointer;
       transition: 0.2s ease;
     }
 
-    .sync-index button.active {
+    .pin-index button.active {
       color: var(--text);
       background: rgba(255, 255, 255, 0.9);
-      border-color: rgba(25, 25, 25, 0.14);
+      border-color: rgba(20, 20, 20, 0.12);
     }
 
-    .sync-stage {
-      border-radius: 22px;
-      overflow: hidden;
+    .pin-stage {
       position: relative;
-      border: 1px solid rgba(255, 255, 255, 0.92);
-      background: #d8dbe2;
+      border-radius: 22px;
       min-height: 460px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.95);
+      background: #d7dbe2;
     }
 
-    .sync-media-item {
+    .stack-item {
       position: absolute;
       inset: 0;
       opacity: 0;
-      transform: scale(1.07);
-      transition: opacity 0.45s ease, transform 0.45s ease;
+      transform: scale(1.08);
+      transition: opacity 0.4s ease, transform 0.4s ease;
       pointer-events: none;
     }
 
-    .sync-media-item.active {
+    .stack-item.active {
       opacity: 1;
       transform: scale(1);
       pointer-events: auto;
     }
 
-    .sync-media-item img,
-    .sync-media-item video {
+    .stack-item img,
+    .stack-item video {
       width: 100%;
       height: 100%;
       object-fit: cover;
       display: block;
-      background: #141414;
+      background: #111;
     }
 
-    .sync-copy {
+    .pin-copy {
       position: relative;
       border-radius: 22px;
       border: 1px solid rgba(255, 255, 255, 0.95);
-      background: rgba(255, 255, 255, 0.74);
+      background: rgba(255, 255, 255, 0.78);
       overflow: hidden;
       min-height: 460px;
     }
 
-    .sync-copy-item {
+    .copy-item {
       position: absolute;
       inset: 0;
-      padding: 28px 24px;
       display: flex;
       flex-direction: column;
       justify-content: center;
       gap: 12px;
+      padding: 28px 24px;
       opacity: 0;
-      transform: translateY(16px);
-      transition: opacity 0.38s ease, transform 0.38s ease;
+      transform: translateY(14px);
+      transition: opacity 0.34s ease, transform 0.34s ease;
       pointer-events: none;
     }
 
-    .sync-copy-item.active {
+    .copy-item.active {
       opacity: 1;
       transform: translateY(0);
       pointer-events: auto;
     }
 
-    .sync-copy-item .meta {
-      margin: 0;
-      font-size: 11px;
-      letter-spacing: 0.11em;
-    }
-
-    .sync-copy-item h3 {
-      font-size: clamp(24px, 4vw, 42px);
-      line-height: 1.12;
-      letter-spacing: -0.02em;
-    }
-
-    .sync-copy-item p {
-      color: #2f2f2f;
-      font-size: 15px;
-      max-width: 32ch;
-      white-space: pre-line;
-    }
-
-    .articles,
-    .media-grid {
-      display: grid;
-      gap: 14px;
-    }
-
-    .article-card {
-      background: var(--bg-card);
-      border: 1px solid rgba(255, 255, 255, 0.95);
-      border-radius: var(--radius);
-      overflow: hidden;
-      box-shadow: var(--shadow);
-      transform: translateY(0);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .article-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 24px 70px rgba(14, 21, 43, 0.14);
-    }
-
-    .article-body { padding: 22px; }
-
-    .article-media {
-      width: 100%;
-      border: none;
-      display: block;
-      background: #d8d9de;
-      max-height: min(52vh, 460px);
-      object-fit: cover;
-    }
-
-    .article-video {
-      width: 100%;
-      display: block;
-      max-height: min(56vh, 500px);
-      background: #111;
-    }
-
     .meta {
       display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 12px;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-bottom: 10px;
       flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
     }
 
     .pill {
       border: 1px solid var(--line);
       border-radius: 999px;
       padding: 2px 10px;
-      background: rgba(255, 255, 255, 0.65);
+      background: rgba(255, 255, 255, 0.66);
     }
 
-    .article-card h3 {
-      font-size: clamp(20px, 4vw, 29px);
+    .copy-item h3 {
+      font-size: clamp(26px, 4.2vw, 44px);
+      line-height: 1.1;
       letter-spacing: -0.02em;
-      margin-bottom: 10px;
-      line-height: 1.2;
     }
 
-    .excerpt { color: #2a2a2a; font-size: 15px; white-space: pre-line; }
+    .copy-item p {
+      font-size: 15px;
+      color: #2f2f2f;
+      max-width: 34ch;
+      white-space: pre-line;
+    }
+
+    .story-wrap { display: grid; gap: 14px; }
+
+    .story-panel {
+      min-height: 68vh;
+      background: rgba(255, 255, 255, 0.82);
+      border: 1px solid rgba(255, 255, 255, 0.95);
+      border-radius: 26px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      transform: translateY(28px);
+      opacity: 0;
+    }
+
+    .story-media,
+    .story-media video,
+    .story-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      background: #151515;
+      display: block;
+      min-height: 420px;
+    }
+
+    .story-body {
+      padding: clamp(20px, 4vw, 40px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 14px;
+    }
+
+    .story-body h3 {
+      font-size: clamp(24px, 4vw, 40px);
+      line-height: 1.12;
+      letter-spacing: -0.02em;
+    }
+
+    .story-body p { color: #2f2f2f; font-size: 16px; white-space: pre-line; }
 
     .about {
       background: rgba(255, 255, 255, 0.82);
       border: 1px solid rgba(255, 255, 255, 0.95);
-      border-radius: 28px;
+      border-radius: 24px;
       box-shadow: var(--shadow);
-      padding: clamp(22px, 4vw, 42px);
-      margin-top: 8px;
+      padding: clamp(24px, 4vw, 44px);
     }
 
     .about p {
-      font-size: clamp(16px, 2vw, 20px);
+      font-size: clamp(16px, 2vw, 22px);
       color: #333;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       max-width: 48ch;
     }
 
     .about p:last-child { margin-bottom: 0; color: var(--accent); font-weight: 600; }
 
+    .empty {
+      border: 1px dashed var(--line);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.52);
+      color: var(--muted);
+      padding: 40px 20px;
+      text-align: center;
+    }
+
     footer {
       width: min(92vw, var(--max-width));
       margin: 0 auto 26px;
-      border-top: 1px solid rgba(19, 19, 19, 0.12);
+      border-top: 1px solid rgba(21, 21, 21, 0.12);
       padding-top: 16px;
-      color: var(--text-muted);
+      color: var(--muted);
       font-size: 12px;
       text-transform: uppercase;
       letter-spacing: 0.09em;
     }
 
-    .empty {
-      text-align: center;
-      border: 1px dashed var(--line);
-      border-radius: var(--radius);
-      padding: 48px 24px;
-      color: var(--text-muted);
-      background: rgba(255, 255, 255, 0.52);
-    }
-
     @media (max-width: 980px) {
-      .sync-pin { min-height: auto; }
-      .sync-layout {
+      .pin-gallery-shell {
         grid-template-columns: 1fr;
         min-height: auto;
       }
-      .sync-index {
+
+      .pin-index {
         flex-direction: row;
         flex-wrap: wrap;
-        justify-content: flex-start;
       }
-      .sync-index button {
-        min-width: 56px;
-      }
-      .sync-stage,
-      .sync-copy {
+
+      .pin-stage,
+      .pin-copy {
         min-height: 360px;
       }
-      .sync-copy-item h3 {
-        font-size: clamp(22px, 6vw, 34px);
+
+      .story-panel {
+        grid-template-columns: 1fr;
+        min-height: auto;
+      }
+
+      .story-media,
+      .story-media video,
+      .story-media img {
+        min-height: 300px;
       }
     }
 
@@ -465,18 +436,16 @@
       .nav-logo { display: none; }
       .nav-links { width: 100%; justify-content: space-between; }
       .nav-links a { flex: 1; text-align: center; padding: 9px 8px; }
-      .hero { min-height: auto; padding: 34px 0 20px; }
-      .hero-top { gap: 12px; }
-      .avatar { width: 58px; height: 58px; }
-      .hero-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .metric:last-child { grid-column: 1 / -1; }
+      .hero { min-height: auto; margin-bottom: 24px; }
+      .metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .metrics .metric:last-child { grid-column: 1 / -1; }
     }
   </style>
 </head>
 <body>
   <div class="bg"></div>
-  <div class="orb orb-1" aria-hidden="true"></div>
-  <div class="orb orb-2" aria-hidden="true"></div>
+  <div class="fog fog-a" aria-hidden="true"></div>
+  <div class="fog fog-b" aria-hidden="true"></div>
 
   <nav>
     <div class="nav-logo">escape journal</div>
@@ -496,10 +465,14 @@
   <script>
     let data = { articles: [], settings: {} };
     let page = 'home';
-    const ENABLE_SYNC_PIN = false;
 
     const categoryLabel = {
-      tech: '技术', thought: '思考', life: '生活', other: '其他', image: '图片', video: '视频'
+      tech: '技术',
+      thought: '思考',
+      life: '生活',
+      other: '其他',
+      image: '图片',
+      video: '视频'
     };
 
     function escapeHtml(str) {
@@ -542,58 +515,28 @@
         .sort((a, b) => String(b.date || '').localeCompare(String(a.date || '')));
     }
 
-    function renderArticleCard(article) {
-      const title = escapeHtml(article.title || '未命名内容');
-      const date = escapeHtml(article.date || '');
-      const category = categoryLabel[article.category] || escapeHtml(article.category || '随笔');
-      const excerpt = toSafeText(article.excerpt || article.content || '');
-      const imageUrl = article.image_url ? escapeHtml(article.image_url) : '';
-      const videoUrl = article.video_url ? escapeHtml(article.video_url) : '';
+    function renderPinGallery(items) {
+      if (!items.length) return '<div class="empty">暂无媒体内容，先去后台上传图片或视频。</div>';
 
-      let media = '';
-      if (videoUrl) media = `<video class="article-video" src="${videoUrl}" controls preload="metadata"></video>`;
-      else if (imageUrl) media = `<img class="article-media" src="${imageUrl}" alt="${title}" loading="lazy" onerror="this.style.display='none'">`;
+      const indexHtml = items.map((_, i) => `<button class="pin-dot ${i === 0 ? 'active' : ''}" data-idx="${i}">${String(i + 1).padStart(2, '0')}</button>`).join('');
 
-      return `
-        <article class="article-card reveal">
-          ${media}
-          <div class="article-body">
-            <div class="meta"><span>${date}</span><span class="pill">${category}</span></div>
-            <h3>${title}</h3>
-            <p class="excerpt">${excerpt}</p>
-          </div>
-        </article>
-      `;
-    }
-
-    function buildSyncItems(articles) {
-      const withMedia = articles.filter(a => a.image_url || a.video_url);
-      const source = withMedia.length >= 3 ? withMedia : articles;
-      return source.slice(0, 5);
-    }
-
-    function renderSyncSection(items) {
-      if (!items.length) return '';
-
-      const index = items.map((_, i) => `<button class="sync-dot ${i === 0 ? 'active' : ''}" data-idx="${i}">${String(i + 1).padStart(2, '0')}</button>`).join('');
-
-      const media = items.map((a, i) => {
+      const stackHtml = items.map((a, i) => {
         const title = escapeHtml(a.title || '未命名内容');
         const imageUrl = a.image_url ? escapeHtml(a.image_url) : '';
         const videoUrl = a.video_url ? escapeHtml(a.video_url) : '';
-        const body = videoUrl
-          ? `<video src="${videoUrl}" muted playsinline loop preload="metadata"></video>`
+        const media = videoUrl
+          ? `<video src="${videoUrl}" muted loop playsinline preload="metadata"></video>`
           : `<img src="${imageUrl || 'background.jpg'}" alt="${title}" loading="lazy" onerror="this.src='background.jpg'">`;
-        return `<div class="sync-media-item ${i === 0 ? 'active' : ''}" data-idx="${i}">${body}</div>`;
+        return `<div class="stack-item ${i === 0 ? 'active' : ''}" data-idx="${i}">${media}</div>`;
       }).join('');
 
-      const copy = items.map((a, i) => {
+      const copyHtml = items.map((a, i) => {
         const title = escapeHtml(a.title || '未命名内容');
         const date = escapeHtml(a.date || '');
         const category = categoryLabel[a.category] || escapeHtml(a.category || '随笔');
         const excerpt = toSafeText(a.excerpt || a.content || '没有摘要');
         return `
-          <article class="sync-copy-item ${i === 0 ? 'active' : ''}" data-idx="${i}">
+          <article class="copy-item ${i === 0 ? 'active' : ''}" data-idx="${i}">
             <div class="meta"><span>${date}</span><span class="pill">${category}</span></div>
             <h3>${title}</h3>
             <p>${excerpt}</p>
@@ -602,68 +545,82 @@
       }).join('');
 
       return `
-        <section class="sync-section reveal">
-          <div class="section-head"><h2>精选滚动</h2><p>index / media / title sync</p></div>
-          <div class="sync-pin" id="syncPin" data-count="${items.length}">
-            <div class="sync-layout">
-              <div class="sync-index">${index}</div>
-              <div class="sync-stage">${media}</div>
-              <div class="sync-copy">${copy}</div>
+        <section class="block">
+          <div class="section-head reveal"><h2>Pin Gallery</h2><p>scroll trigger pin / image stack</p></div>
+          <div class="pin-gallery" id="pinGallery" data-count="${items.length}">
+            <div class="pin-gallery-shell">
+              <div class="pin-index">${indexHtml}</div>
+              <div class="pin-stage">${stackHtml}</div>
+              <div class="pin-copy">${copyHtml}</div>
             </div>
           </div>
         </section>
       `;
     }
 
-    function renderHome(articles, settings) {
-      const latest = articles.slice(0, 3);
-      const title = escapeHtml(settings.title || 'escape');
-      const subtitle = escapeHtml(settings.subtitle || '逃离现实，记录真实想法。');
-      const withImage = articles.filter(a => a.image_url).length;
-      const withVideo = articles.filter(a => a.video_url).length;
-      const syncItems = buildSyncItems(articles);
-
+    function renderStoryPanels(items) {
+      if (!items.length) return '<div class="empty">暂无文章。</div>';
       return `
-        <section class="hero">
-          <div class="hero-top reveal">
-            <img src="avatar.jpg" alt="avatar" class="avatar" loading="lazy">
-            <span class="hero-label">editorial motion</span>
-          </div>
-          <h1 class="reveal">${title}</h1>
-          <p class="subtitle reveal">${subtitle}</p>
-          <div class="hero-metrics reveal">
-            <div class="metric"><b>${articles.length}</b><span>篇内容</span></div>
-            <div class="metric"><b>${withImage}</b><span>图像条目</span></div>
-            <div class="metric"><b>${withVideo}</b><span>视频条目</span></div>
-          </div>
-        </section>
+        <section class="block" id="storySections">
+          <div class="section-head reveal"><h2>Section Scroll</h2><p>section-based storytelling</p></div>
+          <div class="story-wrap">
+            ${items.map((a) => {
+              const title = escapeHtml(a.title || '未命名内容');
+              const date = escapeHtml(a.date || '');
+              const category = categoryLabel[a.category] || escapeHtml(a.category || '随笔');
+              const excerpt = toSafeText(a.excerpt || a.content || '没有摘要');
+              const imageUrl = a.image_url ? escapeHtml(a.image_url) : '';
+              const videoUrl = a.video_url ? escapeHtml(a.video_url) : '';
+              const media = videoUrl
+                ? `<video src="${videoUrl}" controls preload="metadata"></video>`
+                : `<img src="${imageUrl || 'background.jpg'}" alt="${title}" loading="lazy" onerror="this.src='background.jpg'">`;
 
-        ${renderSyncSection(syncItems)}
-
-        <section>
-          <div class="section-head reveal"><h2>最新随笔</h2><p>latest entries</p></div>
-          <div class="articles">
-            ${latest.length ? latest.map(renderArticleCard).join('') : '<div class="empty">还没有发布内容。</div>'}
+              return `
+                <article class="story-panel">
+                  <div class="story-media">${media}</div>
+                  <div class="story-body">
+                    <div class="meta"><span>${date}</span><span class="pill">${category}</span></div>
+                    <h3>${title}</h3>
+                    <p>${excerpt}</p>
+                  </div>
+                </article>
+              `;
+            }).join('')}
           </div>
         </section>
       `;
     }
 
-    function renderArticlesPage(articles) {
-      const mediaOnly = articles.filter(a => a.image_url || a.video_url).slice(0, 6);
-      return `
-        <section>
-          <div class="section-head reveal"><h2>全部随笔</h2><p>all posts</p></div>
-          <div class="articles" style="margin-bottom: 26px;">
-            ${articles.length ? articles.map(renderArticleCard).join('') : '<div class="empty">还没有文章。</div>'}
-          </div>
+    function renderHome(articles, settings) {
+      const title = escapeHtml(settings.title || 'escape');
+      const subtitle = escapeHtml(settings.subtitle || '逃离现实，记录真实想法。');
+      const mediaItems = articles.filter(a => a.image_url || a.video_url).slice(0, 6);
+      const storyItems = articles.slice(0, 5);
+      const imageCount = articles.filter(a => a.image_url).length;
+      const videoCount = articles.filter(a => a.video_url).length;
 
-          <div class="section-head reveal"><h2>媒体流</h2><p>image / video</p></div>
-          <div class="media-grid">
-            ${mediaOnly.length ? mediaOnly.map(renderArticleCard).join('') : '<div class="empty">暂时没有媒体内容。</div>'}
+      return `
+        <section class="hero">
+          <div class="hero-top reveal">
+            <img src="avatar.jpg" alt="avatar" class="avatar" loading="lazy">
+            <span class="hero-label">scrolltrigger interaction</span>
+          </div>
+          <h1 class="reveal">${title}</h1>
+          <p class="subtitle reveal">${subtitle}</p>
+          <div class="metrics reveal">
+            <div class="metric"><b>${articles.length}</b><span>篇内容</span></div>
+            <div class="metric"><b>${imageCount}</b><span>图片条目</span></div>
+            <div class="metric"><b>${videoCount}</b><span>视频条目</span></div>
           </div>
         </section>
+
+        ${renderPinGallery(mediaItems)}
+        ${renderStoryPanels(storyItems)}
       `;
+    }
+
+    function renderArticles(articles) {
+      return renderStoryPanels(articles);
     }
 
     function renderAbout(settings) {
@@ -671,7 +628,7 @@
       const subtitle = escapeHtml(settings.subtitle || '保持好奇，保持输出。');
       return `
         <section class="about reveal">
-          <p>你好，我是 ${title}。这是我的个人空间，用来记录技术、生活和长期想做但一直没做完的事。</p>
+          <p>你好，我是 ${title}。这里是我的个人网页，记录技术、生活和想法。</p>
           <p>${subtitle}</p>
           <p>Stay curious. Keep shipping.</p>
         </section>
@@ -683,12 +640,15 @@
       const articles = getPublishedArticles();
       const settings = data.settings || {};
 
-      if (page === 'home') container.innerHTML = renderHome(articles, settings);
-      else if (page === 'articles') container.innerHTML = renderArticlesPage(articles);
-      else container.innerHTML = renderAbout(settings);
+      if (page === 'home') {
+        container.innerHTML = renderHome(articles, settings);
+      } else if (page === 'articles') {
+        container.innerHTML = renderArticles(articles);
+      } else {
+        container.innerHTML = renderAbout(settings);
+      }
 
-      initMotion();
-      initSyncScroll();
+      initEffects();
     }
 
     function showPage(next) {
@@ -700,22 +660,21 @@
       render();
     }
 
-    function initMotion() {
+    function initEffects() {
       if (!(window.gsap && window.ScrollTrigger)) return;
       gsap.registerPlugin(ScrollTrigger);
-
       ScrollTrigger.getAll().forEach(t => t.kill());
 
-      gsap.to('.orb-1', {
-        y: -70,
+      gsap.to('.fog-a', {
+        y: -90,
         x: 60,
         scrollTrigger: { trigger: document.body, start: 'top top', end: 'bottom top', scrub: 1.4 }
       });
 
-      gsap.to('.orb-2', {
-        y: 100,
-        x: -70,
-        scrollTrigger: { trigger: document.body, start: 'top top', end: 'bottom top', scrub: 1.7 }
+      gsap.to('.fog-b', {
+        y: 90,
+        x: -60,
+        scrollTrigger: { trigger: document.body, start: 'top top', end: 'bottom top', scrub: 1.8 }
       });
 
       gsap.fromTo('.reveal',
@@ -723,25 +682,21 @@
         { y: 0, opacity: 1, stagger: 0.06, duration: 0.65, ease: 'power2.out', overwrite: 'auto' }
       );
 
-      document.querySelectorAll('.article-card').forEach(card => {
-        gsap.fromTo(card,
-          { y: 28, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.6, ease: 'power2.out', scrollTrigger: { trigger: card, start: 'top 90%' } }
-        );
-      });
+      initPinGallery();
+      initSectionScroll();
     }
 
-    function initSyncScroll() {
-      const pin = document.getElementById('syncPin');
-      if (!(pin && window.gsap && window.ScrollTrigger)) return;
+    function initPinGallery() {
+      const gallery = document.getElementById('pinGallery');
+      if (!gallery) return;
 
-      const count = Number(pin.dataset.count || 0);
+      const count = Number(gallery.dataset.count || 0);
       if (count < 2) return;
 
-      const mediaItems = Array.from(pin.querySelectorAll('.sync-media-item'));
-      const dots = Array.from(pin.querySelectorAll('.sync-dot'));
-      const copyItems = Array.from(pin.querySelectorAll('.sync-copy-item'));
-      const videos = mediaItems.map(item => item.querySelector('video')).filter(Boolean);
+      const dots = Array.from(gallery.querySelectorAll('.pin-dot'));
+      const stackItems = Array.from(gallery.querySelectorAll('.stack-item'));
+      const copyItems = Array.from(gallery.querySelectorAll('.copy-item'));
+      const videos = stackItems.map(item => item.querySelector('video')).filter(Boolean);
       let active = -1;
 
       function setActive(index) {
@@ -749,11 +704,11 @@
         active = index;
 
         dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
-        mediaItems.forEach((item, i) => item.classList.toggle('active', i === index));
+        stackItems.forEach((item, i) => item.classList.toggle('active', i === index));
         copyItems.forEach((item, i) => item.classList.toggle('active', i === index));
 
         videos.forEach(v => v.pause());
-        const currentVideo = mediaItems[index] && mediaItems[index].querySelector('video');
+        const currentVideo = stackItems[index] && stackItems[index].querySelector('video');
         if (currentVideo) {
           currentVideo.currentTime = 0;
           currentVideo.play().catch(() => {});
@@ -762,31 +717,62 @@
 
       setActive(0);
 
-      const section = pin.closest('.sync-section');
-      const usePin = ENABLE_SYNC_PIN && window.matchMedia('(min-width: 981px)').matches;
-
-      const st = ScrollTrigger.create({
-        trigger: section,
-        start: usePin ? 'top top+=96' : 'top 72%',
-        end: usePin ? `+=${count * 320}` : 'bottom 38%',
-        pin: usePin ? pin : false,
+      const usePin = window.matchMedia('(min-width: 981px)').matches;
+      const trigger = ScrollTrigger.create({
+        trigger: gallery,
+        start: usePin ? 'top top+=96' : 'top 76%',
+        end: usePin ? `+=${Math.max(1200, count * 380)}` : 'bottom 40%',
+        pin: usePin,
         scrub: true,
         anticipatePin: usePin ? 1 : 0,
         onUpdate: self => {
-          const i = Math.min(count - 1, Math.max(0, Math.round(self.progress * (count - 1))));
-          setActive(i);
+          const idx = Math.min(count - 1, Math.max(0, Math.round(self.progress * (count - 1))));
+          setActive(idx);
         }
       });
 
       dots.forEach((dot, i) => {
         dot.addEventListener('click', () => {
           setActive(i);
-          const start = st.start;
-          const end = st.end;
-          const target = start + ((end - start) * (i / (count - 1)));
+          const target = trigger.start + ((trigger.end - trigger.start) * (i / (count - 1)));
           window.scrollTo({ top: target, behavior: 'smooth' });
         });
       });
+    }
+
+    function initSectionScroll() {
+      const panels = gsap.utils.toArray('.story-panel');
+      if (!panels.length) return;
+
+      panels.forEach((panel) => {
+        gsap.to(panel, {
+          opacity: 1,
+          y: 0,
+          duration: 0.7,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: panel,
+            start: 'top 82%'
+          }
+        });
+      });
+
+      if (panels.length > 1) {
+        const wrap = document.getElementById('storySections');
+        ScrollTrigger.create({
+          trigger: wrap,
+          start: 'top top+=100',
+          end: 'bottom bottom',
+          snap: {
+            snapTo: (value) => {
+              const step = 1 / (panels.length - 1);
+              return Math.round(value / step) * step;
+            },
+            duration: 0.24,
+            delay: 0.04
+          }
+        });
+      }
     }
 
     document.querySelectorAll('.nav-links a').forEach(link => {
