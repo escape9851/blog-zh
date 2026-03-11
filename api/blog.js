@@ -118,6 +118,32 @@ function parseBody(raw) {
   return raw;
 }
 
+function normalizeArticle(item) {
+  const src = item && typeof item === 'object' ? item : {};
+  return {
+    id: Number(src.id) || Date.now(),
+    title: String(src.title || '').trim() || '未命名内容',
+    date: String(src.date || '').trim() || new Date().toISOString().slice(0, 10),
+    category: String(src.category || 'other').trim() || 'other',
+    excerpt: String(src.excerpt || '').trim(),
+    content: String(src.content || '').trim(),
+    image_url: String(src.image_url || '').trim(),
+    video_url: String(src.video_url || '').trim(),
+    status: String(src.status || 'published').trim() || 'published'
+  };
+}
+
+function normalizeData(raw) {
+  const source = raw && typeof raw === 'object' ? raw : {};
+  const articles = Array.isArray(source.articles) ? source.articles.map(normalizeArticle) : [];
+  const settingsSrc = source.settings && typeof source.settings === 'object' ? source.settings : {};
+  const settings = {
+    title: String(settingsSrc.title || 'escape').trim() || 'escape',
+    subtitle: String(settingsSrc.subtitle || '逃离现实，记录真实想法。').trim() || '逃离现实，记录真实想法。'
+  };
+  return { articles, settings };
+}
+
 export default async function handler(req, res) {
   setCors(res);
 
@@ -136,17 +162,39 @@ export default async function handler(req, res) {
   try {
     const token = ensureToken();
 
+    if (action === 'health') {
+      const { defaultBranch } = await getRepoMeta(token);
+      return json(res, 200, {
+        ok: true,
+        repo: REPO,
+        branch: defaultBranch,
+        timestamp: new Date().toISOString()
+      });
+    }
+
     if (action === 'get') {
       const file = await getContent(DATA_FILE, token);
-      return json(res, 200, { data: file.data, sha: file.sha });
+      return json(res, 200, { data: normalizeData(file.data), sha: file.sha });
+    }
+
+    if (action === 'getFeed') {
+      const file = await getContent(DATA_FILE, token);
+      const normalized = normalizeData(file.data);
+      const published = normalized.articles.filter(a => a.status !== 'draft');
+      return json(res, 200, {
+        data: {
+          settings: normalized.settings,
+          articles: published
+        }
+      });
     }
 
     if (action === 'save') {
       const current = await getContent(DATA_FILE, token);
-      const payload = {
+      const payload = normalizeData({
         articles: Array.isArray(data.articles) ? data.articles : [],
         settings: data.settings || {}
-      };
+      });
 
       const contentBase64 = Buffer.from(JSON.stringify(payload, null, 2), 'utf8').toString('base64');
       await saveContent(DATA_FILE, token, {
