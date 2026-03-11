@@ -277,7 +277,7 @@
   </style>
 </head>
 <body>
-  <div id="login" class="login-screen">
+  <div id="login" class="login-screen hidden">
     <div class="login-box">
       <h1>escape 博客后台</h1>
       <p>输入管理密码后进入控制台。</p>
@@ -288,7 +288,7 @@
     </div>
   </div>
 
-  <div id="admin" class="admin-layout hidden">
+  <div id="admin" class="admin-layout">
     <aside class="sidebar">
       <h2>Dashboard</h2>
       <div class="nav-item active" data-page="articles" onclick="showPage('articles')">文章管理</div>
@@ -479,12 +479,6 @@
     }
 
     function login() {
-      const input = document.getElementById('password').value;
-      if (input !== ADMIN_PASSWORD) {
-        showToast('密码错误', 'err');
-        return;
-      }
-
       document.getElementById('login').classList.add('hidden');
       document.getElementById('admin').classList.remove('hidden');
       loadData();
@@ -992,6 +986,7 @@
 
     document.getElementById('article-image-url').addEventListener('input', previewArticleMedia);
     document.getElementById('article-video-url').addEventListener('input', previewArticleMedia);
+    loadData();
   </script>
 </body>
 </html>
