@@ -91,14 +91,15 @@
 <body>
   <div class="container">
     <h1>Backend Console</h1>
-    <p class="subtitle">用于调试 /api/blog 的 get/save/uploadAsset 接口（上传建议单文件 ≤ 2.8MB）。</p>
+    <p class="subtitle">用于调试 /api/blog 的 health/get/getFeed/save/uploadAsset 接口（上传建议单文件 ≤ 2.8MB）。</p>
 
     <div class="grid">
       <section class="card">
         <h2>1) 接口健康检查</h2>
-        <p class="small">会调用 <code>action=get</code>。</p>
+        <p class="small">会调用 <code>action=health</code>；也可读取 feed 预览。</p>
         <div class="row">
           <button onclick="checkHealth()">检查 API</button>
+          <button class="secondary" onclick="checkFeed()">读取 Feed</button>
         </div>
         <div id="health-status" class="status">待检测</div>
         <pre id="health-output">{}</pre>
@@ -170,11 +171,23 @@
     async function checkHealth() {
       show('health-status', '检测中...');
       try {
-        const result = await callApi('get');
+        const result = await callApi('health');
         document.getElementById('health-output').textContent = pretty(result);
         show('health-status', '接口正常', 'ok');
       } catch (err) {
         show('health-status', `失败: ${err.message}`, 'err');
+        document.getElementById('health-output').textContent = pretty({ error: err.message });
+      }
+    }
+
+    async function checkFeed() {
+      show('health-status', '读取 feed 中...');
+      try {
+        const result = await callApi('getFeed');
+        document.getElementById('health-output').textContent = pretty(result);
+        show('health-status', 'feed 读取成功', 'ok');
+      } catch (err) {
+        show('health-status', `feed 失败: ${err.message}`, 'err');
         document.getElementById('health-output').textContent = pretty({ error: err.message });
       }
     }
