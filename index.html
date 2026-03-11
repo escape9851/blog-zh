@@ -496,6 +496,7 @@
   <script>
     let data = { articles: [], settings: {} };
     let page = 'home';
+    const ENABLE_SYNC_PIN = false;
 
     const categoryLabel = {
       tech: '技术', thought: '思考', life: '生活', other: '其他', image: '图片', video: '视频'
@@ -762,15 +763,15 @@
       setActive(0);
 
       const section = pin.closest('.sync-section');
-      const usePin = window.matchMedia('(min-width: 981px)').matches;
+      const usePin = ENABLE_SYNC_PIN && window.matchMedia('(min-width: 981px)').matches;
 
       const st = ScrollTrigger.create({
         trigger: section,
-        start: usePin ? 'top top+=96' : 'top 75%',
-        end: usePin ? `+=${count * 420}` : `+=${count * 300}`,
+        start: usePin ? 'top top+=96' : 'top 72%',
+        end: usePin ? `+=${count * 320}` : 'bottom 38%',
         pin: usePin ? pin : false,
         scrub: true,
-        anticipatePin: 1,
+        anticipatePin: usePin ? 1 : 0,
         onUpdate: self => {
           const i = Math.min(count - 1, Math.max(0, Math.round(self.progress * (count - 1))));
           setActive(i);
@@ -779,6 +780,7 @@
 
       dots.forEach((dot, i) => {
         dot.addEventListener('click', () => {
+          setActive(i);
           const start = st.start;
           const end = st.end;
           const target = start + ((end - start) * (i / (count - 1)));
