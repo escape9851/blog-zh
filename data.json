@@ -7,6 +7,8 @@
       "category": "tech",
       "excerpt": "111",
       "content": "",
+      "image_url": "",
+      "video_url": "",
       "status": "published"
     },
     {
@@ -16,6 +18,8 @@
       "category": "tech",
       "excerpt": "",
       "content": "",
+      "image_url": "",
+      "video_url": "",
       "status": "published"
     },
     {
@@ -25,6 +29,8 @@
       "category": "tech",
       "excerpt": "摘要A",
       "content": "内容A",
+      "image_url": "",
+      "video_url": "",
       "status": "published"
     },
     {
@@ -34,18 +40,31 @@
       "category": "thought",
       "excerpt": "摘要C",
       "content": "内容C",
+      "image_url": "",
+      "video_url": "",
       "status": "published"
     },
     {
       "id": 1773192160009,
       "title": "图片_1773192160009",
+      "date": "2026-03-11",
       "category": "other",
-      "status": "published",
       "excerpt": "",
       "content": "",
       "image_url": "https://raw.githubusercontent.com/escape9851/blog-zh/main/uploads/images/1773192159283-2ztr2jq-image-1773192159283.jpg",
       "video_url": "",
-      "date": "2026-03-11"
+      "status": "published"
+    },
+    {
+      "id": 1773210711914,
+      "title": "我靠",
+      "date": "2026-03-11",
+      "category": "thought",
+      "excerpt": "啦啦啦",
+      "content": "",
+      "image_url": "",
+      "video_url": "",
+      "status": "published"
     }
   ],
   "settings": {
