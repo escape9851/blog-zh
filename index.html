@@ -13,16 +13,16 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #f4f4f1;
-      --bg-soft: #ffffff;
-      --text: #131313;
-      --text-muted: #5f5f5a;
-      --line: rgba(19, 19, 19, 0.12);
-      --accent: #1f4fd6;
-      --shadow: 0 20px 60px rgba(18, 20, 28, 0.12);
+      --bg: #f3f2ee;
+      --bg-card: rgba(255, 255, 255, 0.84);
+      --text: #161616;
+      --text-muted: #66635d;
+      --line: rgba(24, 24, 24, 0.12);
+      --accent: #1852e6;
+      --shadow: 0 20px 60px rgba(12, 18, 40, 0.12);
       --radius: 24px;
       --radius-s: 14px;
-      --max-width: 1080px;
+      --max-width: 1120px;
     }
 
     body {
@@ -39,49 +39,39 @@
       inset: 0;
       z-index: -1;
       background:
-        radial-gradient(circle at 8% 10%, rgba(31, 79, 214, 0.08), transparent 36%),
-        radial-gradient(circle at 88% 16%, rgba(150, 182, 255, 0.22), transparent 35%),
-        radial-gradient(circle at 82% 90%, rgba(19, 19, 19, 0.06), transparent 36%),
-        linear-gradient(180deg, #fafaf9 0%, #efefea 100%);
+        radial-gradient(circle at 8% 10%, rgba(24, 82, 230, 0.09), transparent 36%),
+        radial-gradient(circle at 88% 12%, rgba(129, 166, 255, 0.22), transparent 34%),
+        radial-gradient(circle at 86% 86%, rgba(25, 25, 25, 0.08), transparent 34%),
+        linear-gradient(180deg, #f9f9f8 0%, #efeeea 100%);
     }
 
     .orb {
       position: fixed;
-      width: 38vmin;
+      width: 36vmin;
       aspect-ratio: 1;
       border-radius: 50%;
       pointer-events: none;
       z-index: -1;
-      filter: blur(36px);
-      opacity: 0.45;
+      filter: blur(40px);
+      opacity: 0.42;
       transform: translate3d(0, 0, 0);
     }
 
-    .orb-1 {
-      background: rgba(31, 79, 214, 0.38);
-      left: -12vmin;
-      top: 32vmin;
-    }
-
-    .orb-2 {
-      background: rgba(255, 255, 255, 0.9);
-      right: -10vmin;
-      top: 8vmin;
-      opacity: 0.7;
-    }
+    .orb-1 { background: rgba(24, 82, 230, 0.34); left: -10vmin; top: 28vmin; }
+    .orb-2 { background: rgba(255, 255, 255, 0.95); right: -10vmin; top: 8vmin; opacity: 0.76; }
 
     nav {
       position: fixed;
-      top: 20px;
+      top: 18px;
       left: 50%;
       transform: translateX(-50%);
       width: min(92vw, var(--max-width));
       background: rgba(255, 255, 255, 0.75);
-      border: 1px solid rgba(255, 255, 255, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.95);
       backdrop-filter: blur(14px);
       border-radius: 999px;
       z-index: 40;
-      box-shadow: 0 12px 30px rgba(11, 18, 46, 0.08);
+      box-shadow: 0 12px 30px rgba(14, 22, 48, 0.08);
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -92,15 +82,10 @@
       letter-spacing: 0.08em;
       font-weight: 700;
       font-size: 13px;
-      color: var(--text);
       text-transform: uppercase;
     }
 
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
+    .nav-links { display: flex; align-items: center; gap: 6px; }
 
     .nav-links a {
       text-decoration: none;
@@ -116,13 +101,13 @@
     .nav-links a.active {
       color: var(--text);
       background: rgba(255, 255, 255, 0.9);
-      border-color: rgba(19, 19, 19, 0.08);
+      border-color: rgba(25, 25, 25, 0.09);
     }
 
     main {
       width: min(92vw, var(--max-width));
       margin: 0 auto;
-      padding: 120px 0 72px;
+      padding: 118px 0 72px;
     }
 
     .loading {
@@ -133,26 +118,22 @@
     }
 
     .hero {
-      min-height: 58vh;
+      min-height: 56vh;
       display: grid;
       align-items: center;
-      gap: 26px;
-      padding: 50px 0 34px;
+      gap: 24px;
+      padding: 54px 0 36px;
     }
 
-    .hero-top {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-    }
+    .hero-top { display: flex; align-items: center; gap: 16px; }
 
     .avatar {
       width: 78px;
       height: 78px;
       border-radius: 50%;
       object-fit: cover;
-      border: 2px solid rgba(255, 255, 255, 0.9);
-      box-shadow: 0 10px 35px rgba(17, 32, 77, 0.18);
+      border: 2px solid rgba(255, 255, 255, 0.95);
+      box-shadow: 0 10px 35px rgba(17, 32, 77, 0.2);
     }
 
     .hero-label {
@@ -165,14 +146,14 @@
 
     .hero h1 {
       font-family: "Noto Serif SC", serif;
-      font-size: clamp(38px, 8vw, 78px);
+      font-size: clamp(40px, 8vw, 82px);
       letter-spacing: -0.02em;
-      line-height: 1.08;
+      line-height: 1.05;
       max-width: 15ch;
     }
 
     .hero .subtitle {
-      font-size: clamp(16px, 2.5vw, 24px);
+      font-size: clamp(16px, 2.4vw, 23px);
       color: var(--text-muted);
       max-width: 42ch;
     }
@@ -181,23 +162,17 @@
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 10px;
-      margin-top: 8px;
-      max-width: 620px;
+      max-width: 660px;
     }
 
     .metric {
-      background: rgba(255, 255, 255, 0.64);
-      border: 1px solid rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.66);
+      border: 1px solid rgba(255, 255, 255, 0.95);
       border-radius: var(--radius-s);
       padding: 14px 16px;
     }
 
-    .metric b {
-      display: block;
-      font-size: 22px;
-      line-height: 1.1;
-      margin-bottom: 3px;
-    }
+    .metric b { display: block; font-size: 22px; line-height: 1.1; margin-bottom: 3px; }
 
     .metric span {
       font-size: 12px;
@@ -210,20 +185,146 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 18px;
-      margin-top: 10px;
+      margin: 8px 0 18px;
+      gap: 10px;
+      flex-wrap: wrap;
     }
 
-    .section-head h2 {
-      font-size: clamp(22px, 4vw, 32px);
-      letter-spacing: -0.02em;
-    }
+    .section-head h2 { font-size: clamp(22px, 4vw, 34px); letter-spacing: -0.02em; }
 
     .section-head p {
-      font-size: 13px;
+      font-size: 12px;
       color: var(--text-muted);
       text-transform: uppercase;
       letter-spacing: 0.12em;
+    }
+
+    .sync-section { margin: 16px 0 40px; }
+
+    .sync-pin {
+      position: relative;
+      background: var(--bg-card);
+      border: 1px solid rgba(255, 255, 255, 0.95);
+      border-radius: 30px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      min-height: 72vh;
+      padding: 14px;
+    }
+
+    .sync-layout {
+      display: grid;
+      grid-template-columns: 84px minmax(0, 1.15fr) minmax(0, 0.85fr);
+      gap: 14px;
+      min-height: calc(72vh - 28px);
+    }
+
+    .sync-index {
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid rgba(255, 255, 255, 0.95);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: 12px 8px;
+      align-items: stretch;
+      justify-content: center;
+    }
+
+    .sync-index button {
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--text-muted);
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 10px 6px;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .sync-index button.active {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.9);
+      border-color: rgba(25, 25, 25, 0.14);
+    }
+
+    .sync-stage {
+      border-radius: 22px;
+      overflow: hidden;
+      position: relative;
+      border: 1px solid rgba(255, 255, 255, 0.92);
+      background: #d8dbe2;
+      min-height: 460px;
+    }
+
+    .sync-media-item {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transform: scale(1.07);
+      transition: opacity 0.45s ease, transform 0.45s ease;
+      pointer-events: none;
+    }
+
+    .sync-media-item.active {
+      opacity: 1;
+      transform: scale(1);
+      pointer-events: auto;
+    }
+
+    .sync-media-item img,
+    .sync-media-item video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      background: #141414;
+    }
+
+    .sync-copy {
+      position: relative;
+      border-radius: 22px;
+      border: 1px solid rgba(255, 255, 255, 0.95);
+      background: rgba(255, 255, 255, 0.74);
+      overflow: hidden;
+      min-height: 460px;
+    }
+
+    .sync-copy-track {
+      position: absolute;
+      inset: 0;
+      transition: transform 0.45s ease;
+    }
+
+    .sync-copy-item {
+      height: 100%;
+      padding: 28px 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .sync-copy-item .meta {
+      margin: 0;
+      font-size: 11px;
+      letter-spacing: 0.11em;
+    }
+
+    .sync-copy-item h3 {
+      font-size: clamp(24px, 4vw, 42px);
+      line-height: 1.12;
+      letter-spacing: -0.02em;
+    }
+
+    .sync-copy-item p {
+      color: #2f2f2f;
+      font-size: 15px;
+      max-width: 32ch;
+      white-space: pre-line;
     }
 
     .articles,
@@ -233,7 +334,7 @@
     }
 
     .article-card {
-      background: rgba(255, 255, 255, 0.84);
+      background: var(--bg-card);
       border: 1px solid rgba(255, 255, 255, 0.95);
       border-radius: var(--radius);
       overflow: hidden;
@@ -247,9 +348,7 @@
       box-shadow: 0 24px 70px rgba(14, 21, 43, 0.14);
     }
 
-    .article-body {
-      padding: 22px;
-    }
+    .article-body { padding: 22px; }
 
     .article-media {
       width: 100%;
@@ -293,11 +392,7 @@
       line-height: 1.2;
     }
 
-    .excerpt {
-      color: #2a2a2a;
-      font-size: 15px;
-      white-space: pre-line;
-    }
+    .excerpt { color: #2a2a2a; font-size: 15px; white-space: pre-line; }
 
     .about {
       background: rgba(255, 255, 255, 0.82);
@@ -315,11 +410,7 @@
       max-width: 48ch;
     }
 
-    .about p:last-child {
-      margin-bottom: 0;
-      color: var(--accent);
-      font-weight: 600;
-    }
+    .about p:last-child { margin-bottom: 0; color: var(--accent); font-weight: 600; }
 
     footer {
       width: min(92vw, var(--max-width));
@@ -341,48 +432,39 @@
       background: rgba(255, 255, 255, 0.52);
     }
 
-    @media (max-width: 820px) {
-      nav {
-        top: 12px;
-        border-radius: 18px;
-      }
-
-      .nav-logo {
-        display: none;
-      }
-
-      .nav-links {
-        width: 100%;
-        justify-content: space-between;
-      }
-
-      .nav-links a {
-        flex: 1;
-        text-align: center;
-        padding: 9px 8px;
-      }
-
-      .hero {
+    @media (max-width: 980px) {
+      .sync-pin { min-height: auto; }
+      .sync-layout {
+        grid-template-columns: 1fr;
         min-height: auto;
-        padding: 34px 0 20px;
       }
+      .sync-index {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+      }
+      .sync-index button {
+        min-width: 56px;
+      }
+      .sync-stage,
+      .sync-copy {
+        min-height: 360px;
+      }
+      .sync-copy-item h3 {
+        font-size: clamp(22px, 6vw, 34px);
+      }
+    }
 
-      .hero-top {
-        gap: 12px;
-      }
-
-      .avatar {
-        width: 58px;
-        height: 58px;
-      }
-
-      .hero-metrics {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .metric:last-child {
-        grid-column: 1 / -1;
-      }
+    @media (max-width: 820px) {
+      nav { top: 12px; border-radius: 18px; }
+      .nav-logo { display: none; }
+      .nav-links { width: 100%; justify-content: space-between; }
+      .nav-links a { flex: 1; text-align: center; padding: 9px 8px; }
+      .hero { min-height: auto; padding: 34px 0 20px; }
+      .hero-top { gap: 12px; }
+      .avatar { width: 58px; height: 58px; }
+      .hero-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .metric:last-child { grid-column: 1 / -1; }
     }
   </style>
 </head>
@@ -394,9 +476,9 @@
   <nav>
     <div class="nav-logo">escape journal</div>
     <div class="nav-links">
-      <a href="#" data-page="home" class="active" onclick="showPage('home')">首页</a>
-      <a href="#" data-page="articles" onclick="showPage('articles')">随笔</a>
-      <a href="#" data-page="about" onclick="showPage('about')">关于</a>
+      <a href="#" data-page="home" class="active">首页</a>
+      <a href="#" data-page="articles">随笔</a>
+      <a href="#" data-page="about">关于</a>
     </div>
   </nav>
 
@@ -411,12 +493,7 @@
     let page = 'home';
 
     const categoryLabel = {
-      tech: '技术',
-      thought: '思考',
-      life: '生活',
-      other: '其他',
-      image: '图片',
-      video: '视频'
+      tech: '技术', thought: '思考', life: '生活', other: '其他', image: '图片', video: '视频'
     };
 
     function escapeHtml(str) {
@@ -439,14 +516,10 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ action: 'get' })
         });
-
-        if (!res.ok) {
-          throw new Error('api failed');
-        }
-
+        if (!res.ok) throw new Error('api failed');
         const json = await res.json();
         data = json.data || { articles: [], settings: {} };
-      } catch (e) {
+      } catch (_) {
         try {
           const fallback = await fetch('/data.json');
           data = await fallback.json();
@@ -454,9 +527,7 @@
           data = { articles: [], settings: {} };
         }
       }
-
       render();
-      initMotion();
     }
 
     function getPublishedArticles() {
@@ -469,30 +540,72 @@
       const title = escapeHtml(article.title || '未命名内容');
       const date = escapeHtml(article.date || '');
       const category = categoryLabel[article.category] || escapeHtml(article.category || '随笔');
-      const excerptRaw = article.excerpt || article.content || '';
-      const excerpt = toSafeText(excerptRaw);
+      const excerpt = toSafeText(article.excerpt || article.content || '');
       const imageUrl = article.image_url ? escapeHtml(article.image_url) : '';
       const videoUrl = article.video_url ? escapeHtml(article.video_url) : '';
 
       let media = '';
-      if (videoUrl) {
-        media = `<video class="article-video" src="${videoUrl}" controls preload="metadata"></video>`;
-      } else if (imageUrl) {
-        media = `<img class="article-media" src="${imageUrl}" alt="${title}" loading="lazy" onerror="this.style.display='none'">`;
-      }
+      if (videoUrl) media = `<video class="article-video" src="${videoUrl}" controls preload="metadata"></video>`;
+      else if (imageUrl) media = `<img class="article-media" src="${imageUrl}" alt="${title}" loading="lazy" onerror="this.style.display='none'">`;
 
       return `
         <article class="article-card reveal">
           ${media}
           <div class="article-body">
-            <div class="meta">
-              <span>${date}</span>
-              <span class="pill">${category}</span>
-            </div>
+            <div class="meta"><span>${date}</span><span class="pill">${category}</span></div>
             <h3>${title}</h3>
             <p class="excerpt">${excerpt}</p>
           </div>
         </article>
+      `;
+    }
+
+    function buildSyncItems(articles) {
+      const withMedia = articles.filter(a => a.image_url || a.video_url);
+      const source = withMedia.length >= 3 ? withMedia : articles;
+      return source.slice(0, 5);
+    }
+
+    function renderSyncSection(items) {
+      if (!items.length) return '';
+
+      const index = items.map((_, i) => `<button class="sync-dot ${i === 0 ? 'active' : ''}" data-idx="${i}">${String(i + 1).padStart(2, '0')}</button>`).join('');
+
+      const media = items.map((a, i) => {
+        const title = escapeHtml(a.title || '未命名内容');
+        const imageUrl = a.image_url ? escapeHtml(a.image_url) : '';
+        const videoUrl = a.video_url ? escapeHtml(a.video_url) : '';
+        const body = videoUrl
+          ? `<video src="${videoUrl}" muted playsinline loop preload="metadata"></video>`
+          : `<img src="${imageUrl || 'background.jpg'}" alt="${title}" loading="lazy" onerror="this.src='background.jpg'">`;
+        return `<div class="sync-media-item ${i === 0 ? 'active' : ''}" data-idx="${i}">${body}</div>`;
+      }).join('');
+
+      const copy = items.map(a => {
+        const title = escapeHtml(a.title || '未命名内容');
+        const date = escapeHtml(a.date || '');
+        const category = categoryLabel[a.category] || escapeHtml(a.category || '随笔');
+        const excerpt = toSafeText(a.excerpt || a.content || '没有摘要');
+        return `
+          <article class="sync-copy-item">
+            <div class="meta"><span>${date}</span><span class="pill">${category}</span></div>
+            <h3>${title}</h3>
+            <p>${excerpt}</p>
+          </article>
+        `;
+      }).join('');
+
+      return `
+        <section class="sync-section reveal">
+          <div class="section-head"><h2>精选滚动</h2><p>index / media / title sync</p></div>
+          <div class="sync-pin" id="syncPin" data-count="${items.length}">
+            <div class="sync-layout">
+              <div class="sync-index">${index}</div>
+              <div class="sync-stage">${media}</div>
+              <div class="sync-copy"><div class="sync-copy-track">${copy}</div></div>
+            </div>
+          </div>
+        </section>
       `;
     }
 
@@ -502,12 +615,13 @@
       const subtitle = escapeHtml(settings.subtitle || '逃离现实，记录真实想法。');
       const withImage = articles.filter(a => a.image_url).length;
       const withVideo = articles.filter(a => a.video_url).length;
+      const syncItems = buildSyncItems(articles);
 
       return `
         <section class="hero">
           <div class="hero-top reveal">
             <img src="avatar.jpg" alt="avatar" class="avatar" loading="lazy">
-            <span class="hero-label">personal site</span>
+            <span class="hero-label">editorial motion</span>
           </div>
           <h1 class="reveal">${title}</h1>
           <p class="subtitle reveal">${subtitle}</p>
@@ -518,11 +632,10 @@
           </div>
         </section>
 
+        ${renderSyncSection(syncItems)}
+
         <section>
-          <div class="section-head reveal">
-            <h2>最新随笔</h2>
-            <p>latest entries</p>
-          </div>
+          <div class="section-head reveal"><h2>最新随笔</h2><p>latest entries</p></div>
           <div class="articles">
             ${latest.length ? latest.map(renderArticleCard).join('') : '<div class="empty">还没有发布内容。</div>'}
           </div>
@@ -534,18 +647,12 @@
       const mediaOnly = articles.filter(a => a.image_url || a.video_url).slice(0, 6);
       return `
         <section>
-          <div class="section-head reveal">
-            <h2>全部随笔</h2>
-            <p>all posts</p>
-          </div>
+          <div class="section-head reveal"><h2>全部随笔</h2><p>all posts</p></div>
           <div class="articles" style="margin-bottom: 26px;">
             ${articles.length ? articles.map(renderArticleCard).join('') : '<div class="empty">还没有文章。</div>'}
           </div>
 
-          <div class="section-head reveal">
-            <h2>媒体流</h2>
-            <p>image / video</p>
-          </div>
+          <div class="section-head reveal"><h2>媒体流</h2><p>image / video</p></div>
           <div class="media-grid">
             ${mediaOnly.length ? mediaOnly.map(renderArticleCard).join('') : '<div class="empty">暂时没有媒体内容。</div>'}
           </div>
@@ -570,15 +677,12 @@
       const articles = getPublishedArticles();
       const settings = data.settings || {};
 
-      if (page === 'home') {
-        container.innerHTML = renderHome(articles, settings);
-      } else if (page === 'articles') {
-        container.innerHTML = renderArticlesPage(articles);
-      } else {
-        container.innerHTML = renderAbout(settings);
-      }
+      if (page === 'home') container.innerHTML = renderHome(articles, settings);
+      else if (page === 'articles') container.innerHTML = renderArticlesPage(articles);
+      else container.innerHTML = renderAbout(settings);
 
       initMotion();
+      initSyncScroll();
     }
 
     function showPage(next) {
@@ -588,64 +692,96 @@
       });
       window.scrollTo({ top: 0, behavior: 'smooth' });
       render();
-      return false;
     }
 
     function initMotion() {
-      if (!(window.gsap && window.ScrollTrigger)) {
-        return;
-      }
-
+      if (!(window.gsap && window.ScrollTrigger)) return;
       gsap.registerPlugin(ScrollTrigger);
 
+      ScrollTrigger.getAll().forEach(t => t.kill());
+
       gsap.to('.orb-1', {
-        y: -80,
+        y: -70,
         x: 60,
-        scrollTrigger: {
-          trigger: document.body,
-          start: 'top top',
-          end: 'bottom top',
-          scrub: 1.5
-        }
+        scrollTrigger: { trigger: document.body, start: 'top top', end: 'bottom top', scrub: 1.4 }
       });
 
       gsap.to('.orb-2', {
         y: 100,
         x: -70,
-        scrollTrigger: {
-          trigger: document.body,
-          start: 'top top',
-          end: 'bottom top',
-          scrub: 1.8
-        }
+        scrollTrigger: { trigger: document.body, start: 'top top', end: 'bottom top', scrub: 1.7 }
       });
 
       gsap.fromTo('.reveal',
-        { y: 20, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          stagger: 0.08,
-          duration: 0.7,
-          ease: 'power2.out',
-          overwrite: 'auto'
-        }
+        { y: 18, opacity: 0 },
+        { y: 0, opacity: 1, stagger: 0.06, duration: 0.65, ease: 'power2.out', overwrite: 'auto' }
       );
 
       document.querySelectorAll('.article-card').forEach(card => {
         gsap.fromTo(card,
-          { y: 36, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 0.7,
-            ease: 'power2.out',
-            scrollTrigger: {
-              trigger: card,
-              start: 'top 90%'
-            }
-          }
+          { y: 28, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.6, ease: 'power2.out', scrollTrigger: { trigger: card, start: 'top 90%' } }
         );
+      });
+    }
+
+    function initSyncScroll() {
+      const pin = document.getElementById('syncPin');
+      if (!(pin && window.gsap && window.ScrollTrigger)) return;
+
+      const count = Number(pin.dataset.count || 0);
+      if (count < 2) return;
+
+      const mediaItems = Array.from(pin.querySelectorAll('.sync-media-item'));
+      const dots = Array.from(pin.querySelectorAll('.sync-dot'));
+      const copyTrack = pin.querySelector('.sync-copy-track');
+      const videos = mediaItems.map(item => item.querySelector('video')).filter(Boolean);
+      let active = -1;
+
+      function setActive(index) {
+        if (index === active) return;
+        active = index;
+
+        dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
+        mediaItems.forEach((item, i) => item.classList.toggle('active', i === index));
+
+        if (copyTrack) {
+          copyTrack.style.transform = `translateY(${-index * 100}%)`;
+        }
+
+        videos.forEach(v => v.pause());
+        const currentVideo = mediaItems[index] && mediaItems[index].querySelector('video');
+        if (currentVideo) {
+          currentVideo.currentTime = 0;
+          currentVideo.play().catch(() => {});
+        }
+      }
+
+      setActive(0);
+
+      const section = pin.closest('.sync-section');
+      const usePin = window.matchMedia('(min-width: 981px)').matches;
+
+      const st = ScrollTrigger.create({
+        trigger: section,
+        start: usePin ? 'top top+=96' : 'top 75%',
+        end: usePin ? `+=${count * 620}` : `+=${count * 380}`,
+        pin: usePin ? pin : false,
+        scrub: true,
+        anticipatePin: 1,
+        onUpdate: self => {
+          const i = Math.min(count - 1, Math.max(0, Math.round(self.progress * (count - 1))));
+          setActive(i);
+        }
+      });
+
+      dots.forEach((dot, i) => {
+        dot.addEventListener('click', () => {
+          const start = st.start;
+          const end = st.end;
+          const target = start + ((end - start) * (i / (count - 1)));
+          window.scrollTo({ top: target, behavior: 'smooth' });
+        });
       });
     }
 
