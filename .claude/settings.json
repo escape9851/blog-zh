@@ -1,0 +1,32 @@
+{
+  "agentTeam": {
+    "defaultOrchestrator": "orchestrator",
+    "requiredStages": [
+      "analyst",
+      "strategist",
+      "builder",
+      "reviewer",
+      "qa-release"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "*",
+        "command": "bash .claude/hooks/pre_tool_use.sh"
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "*",
+        "command": "bash .claude/hooks/post_tool_use.sh \"$TOOL_NAME\""
+      }
+    ],
+    "SubagentStop": [
+      {
+        "matcher": "*",
+        "command": "bash .claude/hooks/subagent_stop.sh"
+      }
+    ]
+  }
+}
