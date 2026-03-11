@@ -515,6 +515,35 @@
         .sort((a, b) => String(b.date || '').localeCompare(String(a.date || '')));
     }
 
+    function buildFallbackItems() {
+      return [
+        {
+          title: '视觉分层',
+          date: '2026-03-11',
+          category: 'design',
+          excerpt: '这是默认示例内容，用于确保滚动交互在无数据时也可见。',
+          image_url: 'background.jpg',
+          video_url: ''
+        },
+        {
+          title: '滚动固定',
+          date: '2026-03-11',
+          category: 'interaction',
+          excerpt: 'Pin 区域会在滚动时固定，索引与图片栈同步切换。',
+          image_url: 'avatar.jpg',
+          video_url: ''
+        },
+        {
+          title: '分段叙事',
+          date: '2026-03-11',
+          category: 'story',
+          excerpt: 'Section-based scrolling 会把内容分段展示，阅读更连贯。',
+          image_url: 'background.jpg',
+          video_url: ''
+        }
+      ];
+    }
+
     function renderPinGallery(items) {
       if (!items.length) return '<div class="empty">暂无媒体内容，先去后台上传图片或视频。</div>';
 
@@ -594,8 +623,28 @@
     function renderHome(articles, settings) {
       const title = escapeHtml(settings.title || 'escape');
       const subtitle = escapeHtml(settings.subtitle || '逃离现实，记录真实想法。');
-      const mediaItems = articles.filter(a => a.image_url || a.video_url).slice(0, 6);
-      const storyItems = articles.slice(0, 5);
+      const fallbackItems = buildFallbackItems();
+      const mediaItems = (() => {
+        const withMedia = articles.filter(a => a.image_url || a.video_url).slice(0, 6);
+        if (withMedia.length >= 2) return withMedia;
+        if (articles.length >= 2) {
+          return articles.slice(0, 4).map((a, i) => ({
+            ...a,
+            image_url: a.image_url || (i % 2 === 0 ? 'background.jpg' : 'avatar.jpg')
+          }));
+        }
+        return fallbackItems;
+      })();
+
+      const storyItems = (() => {
+        if (articles.length >= 2) {
+          return articles.slice(0, 5).map((a, i) => ({
+            ...a,
+            image_url: a.image_url || (i % 2 === 0 ? 'background.jpg' : 'avatar.jpg')
+          }));
+        }
+        return fallbackItems;
+      })();
       const imageCount = articles.filter(a => a.image_url).length;
       const videoCount = articles.filter(a => a.video_url).length;
 
