@@ -435,7 +435,9 @@
   <div id="toast" class="toast hidden"></div>
 
   <script>
-    const API_URL = '/api/blog';
+    const API_URL = window.location.protocol === 'file:'
+      ? 'https://my-blog-zh.vercel.app/api/blog'
+      : '/api/blog';
     const ADMIN_PASSWORD = 'escape123';
 
     let store = { articles: [], settings: {} };
