@@ -35,6 +35,18 @@
       "excerpt": "摘要C",
       "content": "内容C",
       "status": "published"
+    },
+    {
+      "id": 1773192160009,
+      "title": "图片_1773192160009",
+      "category": "other",
+      "status": "published",
+      "excerpt": "",
+      "content": "",
+      "image_url": "https://raw.githubusercontent.com/escape9851/blog-zh/main/uploads/images/1773192159283-2ztr2jq-image-1773192159283.jpg",
+      "video_url": "",
+      "date": "2026-03-11"
     }
-  ]
+  ],
+  "settings": {}
 }
