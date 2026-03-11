@@ -293,19 +293,24 @@
       min-height: 460px;
     }
 
-    .sync-copy-track {
+    .sync-copy-item {
       position: absolute;
       inset: 0;
-      transition: transform 0.45s ease;
-    }
-
-    .sync-copy-item {
-      height: 100%;
       padding: 28px 24px;
       display: flex;
       flex-direction: column;
       justify-content: center;
       gap: 12px;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.38s ease, transform 0.38s ease;
+      pointer-events: none;
+    }
+
+    .sync-copy-item.active {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
     }
 
     .sync-copy-item .meta {
@@ -581,13 +586,13 @@
         return `<div class="sync-media-item ${i === 0 ? 'active' : ''}" data-idx="${i}">${body}</div>`;
       }).join('');
 
-      const copy = items.map(a => {
+      const copy = items.map((a, i) => {
         const title = escapeHtml(a.title || '未命名内容');
         const date = escapeHtml(a.date || '');
         const category = categoryLabel[a.category] || escapeHtml(a.category || '随笔');
         const excerpt = toSafeText(a.excerpt || a.content || '没有摘要');
         return `
-          <article class="sync-copy-item">
+          <article class="sync-copy-item ${i === 0 ? 'active' : ''}" data-idx="${i}">
             <div class="meta"><span>${date}</span><span class="pill">${category}</span></div>
             <h3>${title}</h3>
             <p>${excerpt}</p>
@@ -602,7 +607,7 @@
             <div class="sync-layout">
               <div class="sync-index">${index}</div>
               <div class="sync-stage">${media}</div>
-              <div class="sync-copy"><div class="sync-copy-track">${copy}</div></div>
+              <div class="sync-copy">${copy}</div>
             </div>
           </div>
         </section>
@@ -734,7 +739,7 @@
 
       const mediaItems = Array.from(pin.querySelectorAll('.sync-media-item'));
       const dots = Array.from(pin.querySelectorAll('.sync-dot'));
-      const copyTrack = pin.querySelector('.sync-copy-track');
+      const copyItems = Array.from(pin.querySelectorAll('.sync-copy-item'));
       const videos = mediaItems.map(item => item.querySelector('video')).filter(Boolean);
       let active = -1;
 
@@ -744,10 +749,7 @@
 
         dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
         mediaItems.forEach((item, i) => item.classList.toggle('active', i === index));
-
-        if (copyTrack) {
-          copyTrack.style.transform = `translateY(${-index * 100}%)`;
-        }
+        copyItems.forEach((item, i) => item.classList.toggle('active', i === index));
 
         videos.forEach(v => v.pause());
         const currentVideo = mediaItems[index] && mediaItems[index].querySelector('video');
@@ -765,7 +767,7 @@
       const st = ScrollTrigger.create({
         trigger: section,
         start: usePin ? 'top top+=96' : 'top 75%',
-        end: usePin ? `+=${count * 620}` : `+=${count * 380}`,
+        end: usePin ? `+=${count * 420}` : `+=${count * 300}`,
         pin: usePin ? pin : false,
         scrub: true,
         anticipatePin: 1,
